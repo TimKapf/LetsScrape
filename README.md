@@ -19,4 +19,4 @@ P:
                     Output: List of Tuples (flatten)
 
 K:
--Scraper (Return List of Tuples: [Restaurant (String), [Tag1, Tag2] (List of Strings), #Lieferzeit# (int), Lieferkosten (double/float), Mindestbestellwert(double/float), Bewertung (double/float), Bewertungsanzahl (int))]
+-Scraper (Return List of Tuples: (Restaurant (String), [Tag1, Tag2] (List of Strings), #Lieferzeit# (int), Lieferkosten (double/float), Mindestbestellwert(double/float), Bewertung (double/float), Bewertungsanzahl (int)))
