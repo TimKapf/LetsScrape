@@ -20,6 +20,8 @@ def tag_correction(restaurants: list = [], w_tags: tuple = (), uw_tags: tuple = 
             if not restaurants[i][1]:
                 del restaurants[i]
 
+    return restaurants
+
                 
                 
             
