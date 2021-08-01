@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
+from matplotlib.backends.backend_pdf import PdfPages
 import numpy as np
 
 
@@ -28,6 +29,15 @@ def sort_dict(unsorted_dict):
 
     return sorted_dict
 
+def get_pdf(list_of_figures):
+
+    pdf = PdfPages('pdfname.pdf')
+
+    for fig in list_of_figures:
+        pdf.savefig(fig)
+    
+    pdf.close()
+
 def basic_pie(list_of_restaurants):
 
     count_kitchens, total_number_of_kitchens = prepare_data(list_of_restaurants)
@@ -39,19 +49,6 @@ def basic_pie(list_of_restaurants):
     #TODO Think of better ways to come up with a good limit estimation 1 + 0.04 * num_restaurant 
 
     limit = 1 + 0.05 * num_restaurants
-    '''
-    if num_restaurants <= 25:
-        limit = 1
-    elif num_restaurants <= 50:
-        limit = 3
-    elif num_restaurants <= 100:
-        limit = 5
-    elif num_restaurants <= 300:
-        limit = 10
-    elif num_restaurants <= 500:
-        limit = 20
-    else:
-        limit = 30'''
 
     kitchen_dict = {'others' : 0}
     other_kitchens = []
@@ -71,6 +68,7 @@ def basic_pie(list_of_restaurants):
     
     fig1, ax1 = plt.subplots()
     ax1.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90)
+    ax1.set_title("Distributions of kitchens")
 
     #draw circle 
     centre = plt.Circle((0,0), 0.7, fc='white')
@@ -81,7 +79,8 @@ def basic_pie(list_of_restaurants):
 
     ax1.axis('equal') #ensures that pie is drawn as a circle 
     plt.tight_layout()
-    plt.show()
+    
+    return fig1
 
 
 def basic_bar(list_of_restaurants):
@@ -108,9 +107,10 @@ def basic_bar(list_of_restaurants):
         else: 
             colors.append(cmap[4])
 
-    width = 0.5
+    
 
     fig, ax = plt.subplots()
+    width = 0.5
 
     ax.bar(labels, sizes, width, color=colors)
 
@@ -128,14 +128,12 @@ def basic_bar(list_of_restaurants):
     plt.xticks(rotation=90)
     plt.tight_layout()
 
-    plt.show()
+    return fig
 
 
 def discrete_distribution(list_of_restaurants, kitchen_tags):
 
     category_names = ['very bad', 'bad', 'okay', 'good', 'very good']
-
-    #TODO get all the restaurants with a certain kitchen and their reviews
 
     results = dict((kitchen, [0, 0, 0, 0, 0]) for kitchen in kitchen_tags)
 
@@ -162,6 +160,8 @@ def discrete_distribution(list_of_restaurants, kitchen_tags):
                 elif restaurant[5] <= 5:
                     results[kitchen][4] += 1
 
+    #TODO don't print 0 
+
     labels = list(results.keys())
     data = np.array(list(results.values()))
     data_cum = data.cumsum(axis=1)
@@ -171,21 +171,82 @@ def discrete_distribution(list_of_restaurants, kitchen_tags):
     fig, ax = plt.subplots(figsize=(9.2, 5))
     ax.invert_yaxis()
     ax.xaxis.set_visible(False)
-    ax.set_xlim(0, np.sum(data, axis=1).max())
 
     for i, (colname, color) in enumerate(zip(category_names, category_colors)):
         widths = data[:, i]
         starts = data_cum[:, i] - widths
+        
         rects = ax.barh(labels, widths, left=starts, height=0.5,
-                        label=colname, color=color)
+                    label=colname, color=color)
 
         r, g, b, _ = color
         text_color = 'white' if r * g * b < 0.5 else 'darkgrey'
         ax.bar_label(rects, label_type='center', color=text_color)
+        
+
     ax.legend(ncol=len(category_names), bbox_to_anchor=(0, 1),
               loc='lower left', fontsize='small')
 
     plt.show()
+
+def kitchen_difference(city1, city2, adress1, adress2):
+
+    count_kitchens_c1, _ = prepare_data(city1)
+    count_kitchens_c2, _ = prepare_data(city2)
+
+    #TODO Create dict with differences
+
+    k = tuple(list(count_kitchens_c1.keys()) + list(count_kitchens_c2.keys()))
+
+    differ = dict((i, 0) for i in k)
+    colors = []
+    cmap = ['blue', 'green', 'cornflowerblue', 'mediumspringgreen']
+
+    for k in differ:
+        if k not in count_kitchens_c1:
+            count_kitchens_c1[k] = 0
+        if k not in count_kitchens_c2:
+            count_kitchens_c2[k] = 0
+        differ[k] = count_kitchens_c1[k] - count_kitchens_c2[k]
+    differ = sort_dict(differ)
+
+
+    for v in differ:    
+        if differ[v] >= 0:
+            if count_kitchens_c2[v] == 0:
+                colors.append(cmap[2])
+            else:
+                colors.append(cmap[0])
+        else:
+            if count_kitchens_c1[v] == 0:
+                colors.append(cmap[3])
+            else:
+                colors.append(cmap[1])
+    print(colors)
+
+    fig, ax = plt.subplots()
+
+    labels = differ.keys()
+    width = .85
+    sizes = list(differ.values())
+
+    ax.bar(labels, sizes, width, color=colors)
+    ax.set_ylabel("difference of the amount of kitchens")
+    ax.set_title('Distributions of kitchens')
+    plt.axhline(y=0, color='black', linestyle='-')
+
+    patch1 = mpatches.Patch(color=cmap[0], label= adress1)
+    patch2 = mpatches.Patch(color=cmap[2], label= "only " + adress1)
+    patch3 = mpatches.Patch(color=cmap[1], label= adress2)
+    patch4 = mpatches.Patch(color=cmap[3], label= "only " + adress2)
+    ax.legend(handles=[patch1, patch2, patch3, patch4])
+
+    plt.xticks(rotation=90)
+    plt.tight_layout()
+    plt.show()
+    return fig
+
+
 
 
             
