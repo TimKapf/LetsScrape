@@ -1,6 +1,8 @@
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 from matplotlib.backends.backend_pdf import PdfPages
+from mpl_toolkits.mplot3d import axes3d
+from matplotlib import style
 import numpy as np
 
 
@@ -28,6 +30,26 @@ def sort_dict(unsorted_dict):
         sorted_dict[key] = unsorted_dict[key]
 
     return sorted_dict
+
+def average_rating(city):
+
+    count_kitchens, _ = prepare_data(city)
+
+    average = dict((kitchen, 0) for kitchen in list(count_kitchens.keys()))
+
+    for restaurant in city: 
+        review = restaurant[5]
+        restaurant_kitchen = set(restaurant[1])
+        for kitchen in restaurant_kitchen:
+            average[kitchen] += review 
+
+    for key in average:
+        average[key] /= count_kitchens[key]
+
+    return average
+
+
+    count_kitchens_c1, _ = prepare_data(city)
 
 def get_pdf(list_of_figures):
 
@@ -106,8 +128,6 @@ def basic_bar(list_of_restaurants):
             colors.append(cmap[3])
         else: 
             colors.append(cmap[4])
-
-    
 
     fig, ax = plt.subplots()
     width = 0.5
@@ -196,20 +216,19 @@ def kitchen_difference(city1, city2, adress1, adress2):
 
     #TODO Create dict with differences
 
-    k = tuple(list(count_kitchens_c1.keys()) + list(count_kitchens_c2.keys()))
+    all_kitchen = tuple(list(count_kitchens_c1.keys()) + list(count_kitchens_c2.keys()))
 
-    differ = dict((i, 0) for i in k)
+    differ = dict((i, 0) for i in all_kitchen)
     colors = []
     cmap = ['blue', 'green', 'cornflowerblue', 'mediumspringgreen']
 
-    for k in differ:
-        if k not in count_kitchens_c1:
-            count_kitchens_c1[k] = 0
-        if k not in count_kitchens_c2:
-            count_kitchens_c2[k] = 0
-        differ[k] = count_kitchens_c1[k] - count_kitchens_c2[k]
+    for all_kitchen in differ:
+        if all_kitchen not in count_kitchens_c1:
+            count_kitchens_c1[all_kitchen] = 0
+        if all_kitchen not in count_kitchens_c2:
+            count_kitchens_c2[all_kitchen] = 0
+        differ[all_kitchen] = count_kitchens_c1[all_kitchen] - count_kitchens_c2[all_kitchen]
     differ = sort_dict(differ)
-
 
     for v in differ:    
         if differ[v] >= 0:
@@ -222,7 +241,7 @@ def kitchen_difference(city1, city2, adress1, adress2):
                 colors.append(cmap[3])
             else:
                 colors.append(cmap[1])
-    print(colors)
+    
 
     fig, ax = plt.subplots()
 
@@ -246,34 +265,58 @@ def kitchen_difference(city1, city2, adress1, adress2):
     plt.show()
     return fig
 
+def rating_difference(city1, city2, adress1, adress2):
 
+    average_city1 = average_rating(city1)
+    average_city2 = average_rating(city2)
 
+    count_kitchens_c1 , _ = prepare_data(city1)
+    count_kitchens_c2 , _ = prepare_data(city2)
 
-            
+    kitchen_intersection = set(count_kitchens_c1.keys()).intersection(set(count_kitchens_c2.keys()))
 
+    rating_difference_dict = dict((kitchen, 0) for kitchen in kitchen_intersection)
 
+    colors = []
+    cmap = ['blue', 'green', 'cornflowerblue', 'mediumspringgreen']
 
-
+    for kitchen in rating_difference_dict:
+        rating_difference_dict[kitchen] = average_city1[kitchen] - average_city2[kitchen]
+        if average_city2[kitchen] == 0:
+            colors.append(cmap[2])
+        elif average_city1[kitchen] == 0:
+            colors.append(cmap[3])
+        elif rating_difference_dict[kitchen] >= 0:
+            colors.append(cmap[0])
+        else:
+            colors.append(cmap[1])
     
+    fig, ax = plt.subplots()
 
+    labels = rating_difference_dict.keys()
+    width = .85
+    sizes = list(rating_difference_dict.values())
 
+    ax.bar(labels, sizes, width, color=colors)
+    ax.set_ylabel("rating difference of the average ratings of each kitchen")
+    #ax.set_title('')
+    plt.axhline(y=0, color='black', linestyle='-')
 
+    patch1 = mpatches.Patch(color=cmap[0], label= adress1)
+    patch2 = mpatches.Patch(color=cmap[1], label= adress2)
+    patch3 = mpatches.Patch(color=cmap[2], label= adress2 + ' has no review')
+    patch4 = mpatches.Patch(color=cmap[3], label= adress1 + ' has no review')
+    ax.legend(handles=[patch1, patch3, patch2, patch4])
 
-
-
-
-
+    plt.xticks(rotation=90)
+    plt.tight_layout()
+    plt.show()
+    return fig
+        
 
    
 
-
-
-
-
-
-
-
-
+        
 
 
 
@@ -281,11 +324,8 @@ def kitchen_difference(city1, city2, adress1, adress2):
     
 
 
+    
 
 
-
-
-        
-        
 
 
