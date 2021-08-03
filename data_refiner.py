@@ -10,8 +10,8 @@ def tag_correction(restaurants: list = [], w_tags: tuple = (), uw_tags: tuple = 
 
     # check for tags and delete empty entrys
     # TODO need to be tested
-    if not w_tags is None:
-        for i in range(len(restaurants)):
+    if not (w_tags.empty or uw_tags.empty or restaurants.empty):
+        for i in range((len(restaurants)-1)):
 
             for tag in restaurants[i][1]:
                 if tag not in w_tags or tag in uw_tags:
