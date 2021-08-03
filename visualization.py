@@ -147,6 +147,7 @@ def basic_bar(list_of_restaurants):
 
     plt.xticks(rotation=90)
     plt.tight_layout()
+    
 
     return fig
 
