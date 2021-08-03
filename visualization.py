@@ -222,7 +222,9 @@ def kitchen_difference(city1, city2, adress1, adress2):
     colors = []
     cmap = ['blue', 'green', 'cornflowerblue', 'mediumspringgreen']
 
-    for all_kitchen in differ:
+
+    #TODO VARIABLENNAME falsch
+    for kitchen in differ:
         if all_kitchen not in count_kitchens_c1:
             count_kitchens_c1[all_kitchen] = 0
         if all_kitchen not in count_kitchens_c2:
@@ -312,6 +314,81 @@ def rating_difference(city1, city2, adress1, adress2):
     plt.tight_layout()
     plt.show()
     return fig
+
+def multiple_bars_num_of_kitchens(list_of_cities, list_of_city_names, list_kitchen=[]):
+
+    number_cities = len(list_of_city_names)
+
+    all_kitchens = []
+
+    if list_kitchen != []:
+        all_kitchens = list_kitchen
+        
+    else:
+        for city in list_of_cities:
+            prep, _ = prepare_data(city)
+            all_kitchens.append(list(prep.keys()))
+
+        all_kitchens = [item for sublist in all_kitchens for item in sublist]
+
+        all_kitchens = tuple(all_kitchens)
+        
+    number_kitchens = []
+
+    for city in list_of_cities:
+        helper = []
+        prep, _ = prepare_data(city)
+        for kitchen in all_kitchens:
+            if kitchen not in prep.keys():
+                helper.append(0)
+            else: 
+                helper.append(prep[kitchen])
+        number_kitchens.append(helper)
+        
+    fig = plt.figure()
+    ax = fig.add_subplot(projection='3d')
+
+    colors = []
+    cmap = ['r', 'g', 'b', 'y']
+    yticks = []
+
+    for i in range(number_cities):
+        colors.append(cmap[i%len(cmap)])
+        yticks.append(number_cities-i)
+
+    y_pos = []
+
+    for a, b, i in zip(colors, yticks, range(number_cities)):
+
+        xs = np.arange(len(all_kitchens))
+        xs = [5*i for i in xs]
+        ys = number_kitchens[i]
+
+        plt.xticks(xs, all_kitchens, rotation=90)
+        
+        cs = [a] * len(xs)
+
+        y_pos.append(b)
+
+        ax.bar(xs, ys, zs=b, zdir='y', color=cs, alpha=0.8, width=1.8)
+
+
+    plt.yticks(y_pos, list_of_city_names)
+    
+    ax.set_zlabel('Total number of kitchens')
+
+    print(fig.get_size_inches())
+
+    plt.tight_layout()
+
+    plt.show()
+
+
+
+
+
+
+#def multiple_bars_average_ratings()
         
 
    
