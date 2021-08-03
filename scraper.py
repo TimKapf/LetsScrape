@@ -22,8 +22,8 @@ def restaurants(Adress):
 	One tuple has the form (restaurant_name, [type_kitchen1, type_kitchen2, ...], time_of_delivery, delivery_costs, min_order_value, rating, number_of_rating).'''
 
 	PATH = "chromedriver_91.exe" # Copy the path of the chromedriver in here 
-	driver = webdriver.Chrome()#executable_path="chromedriver_91.exe") 
-	driver.get("https://www.lieferando.de")
+	driver = webdriver.Chrome(executable_path="chromedriver_91.exe") 
+	driver.get("https://www.lieferando.de/en")
 	search = driver.find_element_by_id("imysearchstring")
 	search.click()
 	search.send_keys(Adress)
