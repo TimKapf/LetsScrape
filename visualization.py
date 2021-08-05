@@ -64,6 +64,37 @@ def average_rating(list_of_restaurants):
 
     return average
 
+def get_all_kitchens(list_of_cities):
+
+    all_kitchens = []
+
+    for city in list_of_cities:
+        prep, _ = prepare_data(city)
+        all_kitchens.append(list(prep.keys()))
+
+    all_kitchens = [item for sublist in all_kitchens for item in sublist]
+
+    all_kitchens = list(dict.fromkeys(all_kitchens)) 
+
+    return all_kitchens
+
+def kitchens_of_multiple_cities(list_of_cities, all_kitchens):
+    number_kitchens = []
+
+
+    for city in list_of_cities:
+        helper = []
+        prep, _ = prepare_data(city)
+        for kitchen in all_kitchens:
+            if kitchen not in prep.keys():
+                helper.append(0)
+            else: 
+                helper.append(prep[kitchen])
+        number_kitchens.append(helper)
+    
+    return number_kitchens
+
+
 def get_pdf(list_of_figures, pdf_name):
     '''Create a pdf with given plots in a list.
     
@@ -210,9 +241,8 @@ def discrete_distribution(list_of_restaurants, kitchen_tags):
 
                 elif restaurant[5] <= 5:
                     results[kitchen][4] += 1
-
     #TODO don't print 0 
-
+    
     labels = list(results.keys())
     data = np.array(list(results.values()))
     data_cum = data.cumsum(axis=1)
@@ -253,8 +283,6 @@ def kitchen_difference(city1, city2, adress1, adress2):
     colors = []
     cmap = ['blue', 'green', 'cornflowerblue', 'mediumspringgreen']
 
-
-    #TODO VARIABLENNAME falsch
     for kit in differ:
         if kit not in count_kitchens_c1:
             count_kitchens_c1[kit] = 0
@@ -356,26 +384,9 @@ def multiple_bars_num_of_kitchens(list_of_cities, list_of_city_names, list_kitch
         all_kitchens = list_kitchen # Use the kitchens provided by the optional input list_kitchen
         
     else:
-        for city in list_of_cities:
-            prep, _ = prepare_data(city)
-            all_kitchens.append(list(prep.keys()))
-
-        all_kitchens = [item for sublist in all_kitchens for item in sublist]
-
-        all_kitchens = list(dict.fromkeys(all_kitchens)) 
+        all_kitchens = get_all_kitchens(list_of_cities)
         
-
-    number_kitchens = []
-
-    for city in list_of_cities:
-        helper = []
-        prep, _ = prepare_data(city)
-        for kitchen in all_kitchens:
-            if kitchen not in prep.keys():
-                helper.append(0)
-            else: 
-                helper.append(prep[kitchen])
-        number_kitchens.append(helper)
+    number_kitchens = kitchens_of_multiple_cities(list_of_cities, all_kitchens)
         
     fig = plt.figure()
     ax = fig.add_subplot(projection='3d')
@@ -421,27 +432,9 @@ def headmap(list_of_cities, list_of_city_names):
 
     number_cities = len(list_of_city_names) # number of cities we want to compare
 
-    all_kitchens = []
-
-    for city in list_of_cities:
-        prep, _ = prepare_data(city)
-        all_kitchens.append(list(prep.keys()))
-
-    all_kitchens = [item for sublist in all_kitchens for item in sublist]
-
-    all_kitchens = list(dict.fromkeys(all_kitchens)) 
+    all_kitchens = get_all_kitchens(list_of_cities)
         
-    number_kitchens = []
-
-    for city in list_of_cities:
-        helper = []
-        prep, _ = prepare_data(city)
-        for kitchen in all_kitchens:
-            if kitchen not in prep.keys():
-                helper.append(0)
-            else: 
-                helper.append(prep[kitchen])
-        number_kitchens.append(helper)
+    number_kitchens = kitchens_of_multiple_cities(list_of_cities, all_kitchens)
 
     city_names = list_of_city_names
     kitchen_names = all_kitchens 
