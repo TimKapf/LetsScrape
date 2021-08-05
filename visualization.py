@@ -474,19 +474,3 @@ def headmap(list_of_cities, list_of_city_names):
 
 #def multiple_bars_average_ratings()
         
-
-   
-
-        
-
-
-
-
-    
-
-
-    
-
-
-
-

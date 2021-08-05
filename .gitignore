@@ -132,3 +132,4 @@ chromedriver*
 firefoxdriver*
 testing*
 desktop*
+.DS*

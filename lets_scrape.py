@@ -5,36 +5,46 @@ import data_refiner
 import visualization
 
 #TODO Input of parameters
+print("Hello dere pls gib in welchen Modus")
+print("1. einzelne Stadt")
+print("2. zwei Städte")
+op = int(input())
+if op == 1:
+    print("Bitte geben Sie die Stadt ein")
+    a1 = input()
+else:
+    print("Bitte geben Sie die erste Stadt ein")
+    a1 = input()
+    print("Bitte geben Sie die zweite Stadt ein")
+    a2 = input()
 
-#TODO Calling Scraper with desired options
-a1 = "Berlin Hbf"
-a2 = "Hamburg"
-a3 = 'München'
-a4 = 'Frankfurt'
-a5 = 'Köln'
-a5 = 'Osnabrück'
-a6 = 'Münster'
-a7 = 'Bremen'
-a8 = 'Hannover'
-
+#a1 = "Osnabrueck"
+#a2 = "Berlin hbf"
 data1 = scraper.restaurants(a1)
-data2 = scraper.restaurants(a2)
-data3 = scraper.restaurants(a3)
-data4 = scraper.restaurants(a4)
-data5 = scraper.restaurants(a5)
-data6 = scraper.restaurants(a6)
-data7 = scraper.restaurants(a7)
-data8 = scraper.restaurants(a8)
+data2 = scraper.restaurants(a2) if op == 2 else None
 
-#TODO Flatten/Refine information gathered by the scraper
+print("Wollen Sie nur bestimmte Tags haben?(y/n)")
+op2 = input()
+if op2 == "y":
+    print("Bitte geben Sie die Tags mit einem jeweils mit einem , und ohne Leerzeichen separiert ein")
+    tags = tuple(input().split())
+    data1 = data_refiner.tag_correction(restaurants=data1, w_tags=tags)
+    data2 = data_refiner.tag_correction(restaurants=data2, w_tags=tags) if op == 2 else None
+else:
+    print("Möchten Sie bestimmte Tags ausschließen?(y/n)")
+    op2 = input()
+    if op2 == "y":
+        print("Bitte geben Sie die Tags mit einem jeweils mit einem , und ohne Leerzeichen separiert ein")
+        tags = tuple(input().split())
+        data1 = data_refiner.tag_correction(restaurants=data1, uw_tags=tags)
+        data2 = data_refiner.tag_correction(restaurants=data2, uw_tags=tags) if op == 2 else None
+
+print("Data1: ", data1)
+print("Data2: ", data2)
 #data = data_refiner.tag_correction(data)
 #TODO Output of data
 #a = visualization.basic_bar(data)
 #b = visualization.basic_pie(data)
-#visualization.discrete_distribution(data1,  ["Italienisch", "Indisch", "Sushi"])
+#visualization.discrete_distribution(data,  ["Italienisch", "Indisch", "Sushi"])
 #visualization.get_pdf([a, b])
 #visualization.kitchen_difference(data1, data2, a1, a2)
-#visualization.plot_3D([data1, data2], [a1, a2])
-#visualization.rating_difference(data1, data2, a1, a2)
-#visualization.multiple_bars_num_of_kitchens([data1, data2, data3, data4, data5], [a1, a2, a3, a4, a5])
-visualization.headmap([data1, data2, data3, data4, data5, data6, data7, data8], [a1, a2, a3, a4, a5, a6, a7, a8])
