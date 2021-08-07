@@ -2,7 +2,7 @@
 # the main file for starting the process 
 
 import scraper
-import data_refiner
+import data_helper
 import visualization
 
 #TODO Input of parameters
@@ -28,7 +28,7 @@ data2 = scraper.restaurants(a2) if op == 2 else None
 
 print("Data1: ", data1)
 print("Data2: ", data2)
-#data = data_refiner.tag_correction(data)
+#data = data_helper.tag_correction(data)
 #TODO Output of data
 #a = visualization.basic_bar(data)
 #b = visualization.basic_pie(data)

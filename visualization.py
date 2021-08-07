@@ -4,95 +4,10 @@ from matplotlib.backends.backend_pdf import PdfPages
 from mpl_toolkits.mplot3d import axes3d
 from matplotlib import style
 import numpy as np
+from data_helper import kitchen_counter, sort_dict, average_rating, get_all_kitchens, kitchens_of_multiple_cities
 
-def prepare_data(list_of_restaurants):
-    '''1. Return a dictionary with kitchens as keys and the number of kitchens as value. 2. Return the total amount of kitchens.
-    
-    list_of_restaurants : [(Restaurant->str, [kitchen1->str, kitchen2->str,...], 
-                        Lieferzeiten->int, Lieferkosten->float, Mindestbestellwert->float,
-                        Bewertung->float, Bewertungsnazahl->int), ...]
-    ''' 
-    list_of_kitchens = []
-
-    # Collect all kitchens
-    for t in list_of_restaurants:
-        list_of_kitchens += t[1]
-    
-    # Create dictionary 
-    count_kitchens = {kitchen: list_of_kitchens.count(kitchen) for kitchen in list_of_kitchens}
-
-    return count_kitchens, len(list_of_kitchens)
-
-def sort_dict(unsorted_dict):
-    '''Returns a dictionary in descending order.
-    
-    unsorted_dict : dict
-    '''
-
-    sorted_dict = {}
-    # Sort the keys in descending order
-    sorted_keys = sorted(unsorted_dict, key=unsorted_dict.get, reverse=True)
-
-    # Add data to the keys
-    for key in sorted_keys:
-        sorted_dict[key] = unsorted_dict[key]
-
-    return sorted_dict
-
-def average_rating(list_of_restaurants):
-    '''Return the average rating of each kitchen in a dictionary with the kitchens as keys 
-    and the ratings as values
-    
-    list_of_restaurants : [(Restaurant->str, [kitchen1->str, kitchen2->str,...], 
-                        Lieferzeiten->int, Lieferkosten->float, Mindestbestellwert->float,
-                        Bewertung->float, Bewertungsnazahl->int), ...]
-    '''
-    count_kitchens, _ = prepare_data(list_of_restaurants)
-
-    average = dict((kitchen, 0) for kitchen in list(count_kitchens.keys()))
-
-    # Collect the ratings and add the rating to each kitchen in the dictionary
-    for restaurant in list_of_restaurants: 
-        review = restaurant[5]
-        restaurant_kitchen = set(restaurant[1])
-        for kitchen in restaurant_kitchen:
-            average[kitchen] += review 
-
-    # Calculate the average 
-    for key in average:
-        average[key] /= count_kitchens[key]
-
-    return average
-
-def get_all_kitchens(list_of_cities):
-
-    all_kitchens = []
-
-    for city in list_of_cities:
-        prep, _ = prepare_data(city)
-        all_kitchens.append(list(prep.keys()))
-
-    all_kitchens = [item for sublist in all_kitchens for item in sublist]
-
-    all_kitchens = list(dict.fromkeys(all_kitchens)) 
-
-    return all_kitchens
-
-def kitchens_of_multiple_cities(list_of_cities, all_kitchens):
-    number_kitchens = []
-
-
-    for city in list_of_cities:
-        helper = []
-        prep, _ = prepare_data(city)
-        for kitchen in all_kitchens:
-            if kitchen not in prep.keys():
-                helper.append(0)
-            else: 
-                helper.append(prep[kitchen])
-        number_kitchens.append(helper)
-    
-    return number_kitchens
+#!!! Important, data manipulation moved to file "data_refiner.py"
+#!!! function "prepare_data" renamed in "kitchen_counter"
 
 
 def get_pdf(list_of_figures, pdf_name):
@@ -121,13 +36,12 @@ def basic_pie(list_of_restaurants):
 
     '''
 
-    count_kitchens, total_number_of_kitchens = prepare_data(list_of_restaurants)
+    count_kitchens, total_number_of_kitchens = kitchen_counter(list_of_restaurants)
     count_kitchens = sort_dict(count_kitchens) 
     num_restaurants = len(list_of_restaurants)
 
     # limit to estimate the amount of kitchens included in the category 'others'
     limit = 1 + 0.05 * num_restaurants
-
     kitchen_dict = {'others' : 0} # Include the key 'others' 
     other_kitchens = []
     # Add keys and number of each kitchen to kitchen_dict
@@ -166,7 +80,7 @@ def basic_bar(list_of_restaurants):
     '''Return a bar plot which illustrates the percentage of each kitchen 
     and the total amount of each kitchen.'''
 
-    count_kitchens, total_number_of_kitchens = prepare_data(list_of_restaurants)
+    count_kitchens, total_number_of_kitchens = kitchen_counter(list_of_restaurants)
 
     count_kitchens = sort_dict(count_kitchens)
 
@@ -272,8 +186,8 @@ def discrete_distribution(list_of_restaurants, kitchen_tags):
 
 def kitchen_difference(city1, city2, adress1, adress2):
 
-    count_kitchens_c1, _ = prepare_data(city1)
-    count_kitchens_c2, _ = prepare_data(city2)
+    count_kitchens_c1, _ = kitchen_counter(city1)
+    count_kitchens_c2, _ = kitchen_counter(city2)
 
     #TODO Create dict with differences
 
@@ -331,8 +245,8 @@ def rating_difference(city1, city2, adress1, adress2):
     average_city1 = average_rating(city1)
     average_city2 = average_rating(city2)
 
-    count_kitchens_c1 , _ = prepare_data(city1)
-    count_kitchens_c2 , _ = prepare_data(city2)
+    count_kitchens_c1 , _ = kitchen_counter(city1)
+    count_kitchens_c2 , _ = kitchen_counter(city2)
 
     kitchen_intersection = set(count_kitchens_c1.keys()).intersection(set(count_kitchens_c2.keys()))
 
