@@ -288,7 +288,7 @@ def rating_difference(city1, city2, adress1, adress2):
 
     plt.xticks(rotation=90)
     plt.tight_layout()
-    plt.show()
+    #plt.show()
     return fig
 
 def multiple_bars_num_of_kitchens(list_of_cities, list_of_city_names, list_kitchen=[]):
@@ -344,9 +344,9 @@ def multiple_bars_num_of_kitchens(list_of_cities, list_of_city_names, list_kitch
     #plt.show()
     return fig
 
-#TODO e.g. headmap and def above have same calc. for the listoflist of numbers 
+#TODO e.g. heatmap and def above have same calc. for the listoflist of numbers 
 
-def headmap(list_of_cities, list_of_city_names):
+def heatmap(list_of_cities, list_of_city_names):
 
     number_cities = len(list_of_city_names) # number of cities we want to compare
 
