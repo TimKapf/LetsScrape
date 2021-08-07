@@ -1,3 +1,4 @@
+
 # the main file for starting the process 
 
 import scraper
@@ -34,3 +35,4 @@ print("Data2: ", data2)
 #visualization.discrete_distribution(data,  ["Italienisch", "Indisch", "Sushi"])
 #visualization.get_pdf([a, b])
 #visualization.kitchen_difference(data1, data2, a1, a2)
+
