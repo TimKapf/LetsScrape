@@ -1,5 +1,4 @@
-
-# the main file for starting the process 
+# The main file 
 
 import scraper
 import data_helper
