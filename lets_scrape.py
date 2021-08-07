@@ -23,21 +23,7 @@ else:
 data1 = scraper.restaurants(a1)
 data2 = scraper.restaurants(a2) if op == 2 else None
 
-print("Wollen Sie nur bestimmte Tags haben?(y/n)")
-op2 = input()
-if op2 == "y":
-    print("Bitte geben Sie die Tags mit einem jeweils mit einem , und ohne Leerzeichen separiert ein")
-    tags = tuple(input().split())
-    data1 = data_refiner.tag_correction(restaurants=data1, w_tags=tags)
-    data2 = data_refiner.tag_correction(restaurants=data2, w_tags=tags) if op == 2 else None
-else:
-    print("Möchten Sie bestimmte Tags ausschließen?(y/n)")
-    op2 = input()
-    if op2 == "y":
-        print("Bitte geben Sie die Tags mit einem jeweils mit einem , und ohne Leerzeichen separiert ein")
-        tags = tuple(input().split())
-        data1 = data_refiner.tag_correction(restaurants=data1, uw_tags=tags)
-        data2 = data_refiner.tag_correction(restaurants=data2, uw_tags=tags) if op == 2 else None
+
 
 print("Data1: ", data1)
 print("Data2: ", data2)

@@ -17,13 +17,14 @@ def get_number(String):
 	result = float(result.replace(',','.'))
 	return result
 
+# TODO time.sleep ersetzen
 def restaurants(Adress):
 	'''This funtion will return a list of tuples. Each tuple represents one restaurant which can be found at the input variable (adress) on Lieferando.de.
 	One tuple has the form (restaurant_name, [type_kitchen1, type_kitchen2, ...], time_of_delivery, delivery_costs, min_order_value, rating, number_of_rating).'''
 
 	PATH = "chromedriver_91.exe" # Copy the path of the chromedriver in here 
 	driver = webdriver.Chrome(executable_path="chromedriver_91.exe") 
-	driver.get("https://www.lieferando.de/en")
+	driver.get("https://www.lieferando.de")
 	search = driver.find_element_by_id("imysearchstring")
 	search.click()
 	search.send_keys(Adress)
