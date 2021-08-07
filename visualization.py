@@ -6,7 +6,7 @@ from matplotlib import style
 import numpy as np
 from data_helper import kitchen_counter, sort_dict, average_rating, get_all_kitchens, kitchens_of_multiple_cities
 
-#!!! Important, data manipulation moved to file "data_refiner.py"
+#!!! Important, data manipulation and data helper moved to file "data_helper.py"
 #!!! function "prepare_data" renamed in "kitchen_counter"
 
 
@@ -21,13 +21,14 @@ def get_pdf(list_of_figures, pdf_name):
     #TODO make sure pdf_name is ending with .pdf
 
     pdf = PdfPages(pdf_name)
+    #pdf.attach_note("Test", positionRect=[100, 100, 100, 100])
 
     for fig in list_of_figures:
         pdf.savefig(fig)
     
     pdf.close()
 
-def basic_pie(list_of_restaurants):
+def basic_pie(list_of_restaurants, city_name: str = ""):
     '''Return a pie plot which illustrates the distribution of kitchens.
     
     list_of_restaurants : [(Restaurant->str, [kitchen1->str, kitchen2->str,...], 
@@ -61,7 +62,7 @@ def basic_pie(list_of_restaurants):
     
     fig1, ax1 = plt.subplots()
     ax1.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90)
-    ax1.set_title("Distributions of kitchens")
+    ax1.set_title("Distributions of kitchens " + city_name)
 
     #draw circle 
     centre = plt.Circle((0,0), 0.7, fc='white')
@@ -76,7 +77,7 @@ def basic_pie(list_of_restaurants):
     return fig1
 
 
-def basic_bar(list_of_restaurants):
+def basic_bar(list_of_restaurants, city_name: str = ""):
     '''Return a bar plot which illustrates the percentage of each kitchen 
     and the total amount of each kitchen.'''
 
@@ -109,7 +110,7 @@ def basic_bar(list_of_restaurants):
     ax.bar(labels, sizes, width, color=colors)
 
     ax.set_ylabel('Percent')
-    ax.set_title('Distributions of kitchens')
+    ax.set_title('Distributions of kitchens ' + city_name)
 
     # legend for illustrate the total amount of kitchens 
     patch1 = mpatches.Patch(color=cmap[0], label='1')
@@ -126,7 +127,7 @@ def basic_bar(list_of_restaurants):
     return fig
 
 
-def discrete_distribution(list_of_restaurants, kitchen_tags):
+def discrete_distribution(list_of_restaurants, kitchen_tags, city_name: str = ""):
     '''Return a horizontal bar plot which illustrates the ratings categorized in each kitchen.'''
 
     category_names = ['very bad', 'bad', 'okay', 'good', 'very good']
@@ -179,10 +180,12 @@ def discrete_distribution(list_of_restaurants, kitchen_tags):
         ax.bar_label(rects, label_type='center', color=text_color)
         
 
-    ax.legend(ncol=len(category_names), bbox_to_anchor=(0, 1),
-              loc='lower left', fontsize='small')
+    ax.legend(ncol=len(category_names), bbox_to_anchor=(0, 0),
+              loc='upper left', fontsize='small')
+    ax.set_title("Rating distribution " + city_name)
 
-    plt.show()
+    #plt.show()
+    return fig
 
 def kitchen_difference(city1, city2, adress1, adress2):
 
@@ -338,7 +341,8 @@ def multiple_bars_num_of_kitchens(list_of_cities, list_of_city_names, list_kitch
 
     plt.tight_layout()
 
-    plt.show()
+    #plt.show()
+    return fig
 
 #TODO e.g. headmap and def above have same calc. for the listoflist of numbers 
 
