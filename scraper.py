@@ -55,7 +55,7 @@ def restaurants(Adress):
 
 		try: 
 			delivery_time = restaurant.find_element_by_class_name("avgdeliverytime.avgdeliverytimefull.open").text
-			if delivery_time.startswith(r"[a-zA-Z]"):
+			if delivery_time.startswith("Ab") or delivery_time.startswith("From"):
 				delivery_time = -1
 			else:
 				delivery_time = int(get_number(delivery_time))
