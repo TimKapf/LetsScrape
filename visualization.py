@@ -7,18 +7,18 @@ import numpy as np
 from data_helper import kitchen_counter, sort_dict, get_average, get_all_kitchens, kitchens_averages_of_multiple_cities
 import statistics
 import math
-
+#TODO überflüssige imports entfernen
 #!!! Important, data manipulation and data helper moved to file "data_helper.py"
 #!!! function  "prepare_data" renamed in "kitchen_counter"
 
 
-def get_pdf(list_of_figures, pdf_name):
-    '''Create a pdf with given plots in a list.
+def get_pdf(list_of_figures: list, pdf_name: str) -> None:
+    """Create a pdf with given plots in a list.
     
-    list_of_figures : list of matplotlib figures
-    pdf_name : str
-        Name of the pdf file.
-    '''
+    Keyword arguments:
+    list_of_figures -- list of matplotlib figures
+    pdf_name        -- Name of the pdf file.
+    """
     #TODO make sure pdf_name is ending with .pdf
 
     pdf = PdfPages(pdf_name)
@@ -28,13 +28,16 @@ def get_pdf(list_of_figures, pdf_name):
     
     pdf.close()
 
-def basic_pie(list_of_restaurants, , city_name: str = ""):
-    '''Return a pie plot which illustrates the distribution of kitchens.
+#TODO returntype
+def basic_pie(list_of_restaurants: list, city_name: str = ""):
+    """Returns a pie plot which illustrates the distribution of kitchens.
     
-    list_of_restaurants : [(Restaurant->str, [kitchen1->str, kitchen2->str,...], 
-                        Lieferzeiten->int, Lieferkosten->float, Mindestbestellwert->float,
-                        Bewertung->float, Bewertungsnazahl->int), ...]
-    '''
+    Keyword arguments:
+    list_of_restaurants -- [(restaurant_name: str, [type_kitchen1: str, type_kitchen2: str,...]: list, 
+                                time_of_delivery: int, delivery_costs: float, min_order_value: float,
+                                rating: float, number_of_ratings: int): tuple, ...]: list
+    city_name           -- name of the city.
+    """
 
     count_kitchens, total_number_of_kitchens = kitchen_counter(list_of_restaurants)
     count_kitchens = sort_dict(count_kitchens) 
@@ -45,8 +48,10 @@ def basic_pie(list_of_restaurants, , city_name: str = ""):
 
     kitchen_dict = {'others' : 0} # Include the key 'others' 
     other_kitchens = []
+
     # Add keys and number of each kitchen to kitchen_dict
     for key in count_kitchens:
+
         if count_kitchens[key] > limit: 
             kitchen_dict[key] = count_kitchens[key]
         else: 
@@ -57,6 +62,7 @@ def basic_pie(list_of_restaurants, , city_name: str = ""):
 
     labels = count_kitchens.keys()
     sizes = []
+
     for kitchen in count_kitchens.values():
         sizes.append((kitchen/total_number_of_kitchens) * 100) # Calculate the procentages 
     
@@ -77,16 +83,18 @@ def basic_pie(list_of_restaurants, , city_name: str = ""):
     plt.show()
     return fig1
 
-def bar(labels, sizes, colors, ylabel, title, patches=False):
-    '''Return a bar plot.
+#TODO datatypes and return type
+def bar(labels, sizes, colors, ylabel, title, patches: bool=False):
+    """Returns a bar plot.
+
     Keyword arguments:
-    labels -- label of each bar
-    sizes -- values of each bar
-    colors -- color of each bar
-    ylabel -- name of y-axis 
-    title -- title for the plot
+    labels  -- label of each bar
+    sizes   -- values of each bar
+    colors  -- color of each bar
+    ylabel  -- name of y-axis 
+    title   -- title for the plot
     patches -- include labels and colors for the legend (optional)
-    '''
+    """
 
     fig, ax = plt.subplots()
     width = 0.5
@@ -108,8 +116,9 @@ def bar(labels, sizes, colors, ylabel, title, patches=False):
 
     return fig 
 
-def avg_bar(list_of_restaurants, index, city_name: str = ""):
-    '''Return a bar plot for averages.'''
+#TODO return type
+def avg_bar(list_of_restaurants: list, index: int, city_name: str = ""):
+    """Return a bar plot for averages."""
     
 
     average = get_average(list_of_restaurants, index)
@@ -119,15 +128,22 @@ def avg_bar(list_of_restaurants, index, city_name: str = ""):
     
     # Set ylabel and title for each possible index 
     if index == 2:
+
         ylabel = "Average delivery time"
         title = "Comparison of the average delivery times per kitchen " + city_name
+
     elif index == 3:
+
         ylabel = "Average delivery cost"
         title = "Comparison of the average delivery cost per kitchen " + city_name
+
     elif index == 4:
+
         ylabel = "Average minimum amount for an order"
         title = "Comparison of the average minmum amounts for an order " + city_name
+
     elif index == 5:
+
         ylabel = "Average rating"
         title = "Comparison of the average rating for an order " + city_name
     
@@ -139,8 +155,9 @@ def avg_bar(list_of_restaurants, index, city_name: str = ""):
     plt.show()
     return fig
 
-def basic_bar(list_of_restaurants, city_name: str = ""):
-    '''Return a bar plot which illustrates the percentage of each kitchen with the total amount of each kitchen.'''
+#TODO return type
+def basic_bar(list_of_restaurants:list, city_name: str = ""):
+    """Return a bar plot which illustrates the percentage of each kitchen with the total amount of each kitchen."""
 
     count_kitchens, total_number_of_kitchens = kitchen_counter(list_of_restaurants)
 
@@ -153,7 +170,9 @@ def basic_bar(list_of_restaurants, city_name: str = ""):
 
     # Add the colors and the values in percent for the bars
     for kitchen in count_kitchens.values():
+
         sizes.append((kitchen/total_number_of_kitchens) * 100)
+
         if kitchen == 1:
             colors.append(cmap[0])
         elif kitchen <= 5:
@@ -178,38 +197,39 @@ def basic_bar(list_of_restaurants, city_name: str = ""):
     plt.show()
     return plot
 
-def discrete_distribution(list_of_restaurants, kitchen_tags, , city_name: str = ""):
-    '''Return a horizontal bar plot which illustrates the ratings categorized in each kitchen.
+#TODO return type
+def discrete_distribution(list_of_restaurants: list, kitchen_tags: list, city_name: str = ""):
+    """Return a horizontal bar plot which illustrates the ratings categorized in each kitchen.
     
     Keyword arguments:
     kitchen_tags -- list of kitchens to observe  
-    '''
+    """
 
     category_names = ['very bad', 'bad', 'okay', 'good', 'very good']
 
     results = dict((kitchen, [0, 0, 0, 0, 0]) for kitchen in kitchen_tags)
 
     for restaurant in list_of_restaurants:
+
         restaurant_kitchen = set(restaurant[1])
         kitchen_tags = set(kitchen_tags)
 
         # Intersection of the restaurants kitchen and given kitchen in kitchen_tags
         incommon = kitchen_tags.intersection(restaurant_kitchen) 
 
-        if len(incommon) > 0 and restaurant[6] > 0: # Check if there is an intersection and that the restaurant has reviews
+        # Check if there is an intersection and that the restaurant has reviews
+        if len(incommon) > 0 and restaurant[6] > 0: 
+
             for kitchen in incommon:
+
                 if restaurant[5] <= 1:
                     results[kitchen][0] += 1
-
                 elif restaurant[5] <= 2:
                     results[kitchen][1] += 1
-
                 elif restaurant[5] <= 3:
                     results[kitchen][2] += 1
-
                 elif restaurant[5] <= 4:
                     results[kitchen][3] += 1
-
                 elif restaurant[5] <= 5:
                     results[kitchen][4] += 1
 
@@ -227,6 +247,7 @@ def discrete_distribution(list_of_restaurants, kitchen_tags, , city_name: str = 
     ax.xaxis.set_visible(False)
 
     for i, (colname, color) in enumerate(zip(category_names, category_colors)):
+
         widths = data[:, i]
         starts = data_cum[:, i] - widths
         
@@ -245,20 +266,24 @@ def discrete_distribution(list_of_restaurants, kitchen_tags, , city_name: str = 
     plt.show()
     return fig
 
+#TODO typing and return type
 def difference_plot(difference_dict, ylabel, title, values_city1, values_city2, patchlabel=False):
-    ''' Compare the average differences of two cities.
+    """Compare the average differences of two cities.
+
     Keyword arguments: 
-    difference_dict -- dictionary with kitchen as keys and the differences as values
-    ylabel -- name of the yaxis
-    title -- title of the plot
+    difference_dict            -- dictionary with kitchen as keys and the differences as values
+    ylabel                     -- name of the yaxis
+    title                      -- title of the plot
     values_city1, values_city2 -- values of both cities
-    patchlabel -- include labels and colors for the legend (optional)
-    '''
+    patchlabel                 -- include labels and colors for the legend (optional)
+    """
     
     colors = []
     cmap = ['blue', 'green', 'cornflowerblue', 'mediumspringgreen']
+
     # Add a color for each bar
     for difference in difference_dict:
+
         if values_city2[difference] == 0:
             colors.append(cmap[2])
         elif values_city1[difference] == 0:
@@ -272,11 +297,15 @@ def difference_plot(difference_dict, ylabel, title, values_city1, values_city2, 
     sizes = list(difference_dict.values())
 
     if patchlabel != False:
+
         if len(patchlabel) == 2:
+
             patch1 = mpatches.Patch(color=cmap[0], label=patchlabel[0])
             patch2 = mpatches.Patch(color=cmap[1], label=patchlabel[1])
             patchlabel = [patch1, patch2]
+
         elif len(patchlabel) == 4:
+
             patch1 = mpatches.Patch(color=cmap[0], label=patchlabel[0])
             patch2 = mpatches.Patch(color=cmap[1], label=patchlabel[1])
             patch3 = mpatches.Patch(color=cmap[2], label=patchlabel[2])
@@ -289,12 +318,14 @@ def difference_plot(difference_dict, ylabel, title, values_city1, values_city2, 
 
     return fig
 
+#TODO typing and return type
 def kitchen_difference(city1, city2, adress1, adress2):
-    '''Bar plot to compare the differences of the amount of each kitchen in two cities.
+    """Bar plot to compare the differences of the amount of each kitchen in two cities.
     
     Keyword arguments: 
-    city1, city2 -- list of restaurants for each city
-    adress1, adress2 -- name of the adress of each city'''
+    city1, city2     -- list of restaurants for each city
+    adress1, adress2 -- name of the adress of each city
+    """
 
     count_kitchens_c1, _ = kitchen_counter(city1)
     count_kitchens_c2, _ = kitchen_counter(city2)
@@ -305,11 +336,14 @@ def kitchen_difference(city1, city2, adress1, adress2):
     
     # Calculate the differences 
     for kitchen in differ:
+
         if kitchen not in count_kitchens_c1:
             count_kitchens_c1[kitchen] = 0
         if kitchen not in count_kitchens_c2:
             count_kitchens_c2[kitchen] = 0
+
         differ[kitchen] = count_kitchens_c1[kitchen] - count_kitchens_c2[kitchen]
+
     differ = sort_dict(differ)
 
     ylabel = "difference of the amount of kitchens"
@@ -320,6 +354,7 @@ def kitchen_difference(city1, city2, adress1, adress2):
     plt.show()
     return fig
     
+#TODO typing and return type
 def average_difference(city1, city2, adress1, adress2, index):
 
     average_city1 = get_average(city1, index)
@@ -336,19 +371,27 @@ def average_difference(city1, city2, adress1, adress2, index):
         rating_difference_dict[kitchen] = average_city1[kitchen] - average_city2[kitchen]
 
     patchlabels = False
+
     if index == 2:
+
         ylabel = "difference of the average delivery time of each kitchen"
         title = "Delivery time Differences in" + adress1 + " and " + adress2
         patchlabels = [adress1, adress2]
+
     elif index == 3:
+
         ylabel = "difference of the average delivery cost of each kitchen"
         title = "Delivery Cost Differences in " + adress1 + " and " + adress2
         patchlabels = [adress1, adress2, adress2 + ': Free', adress1 + ': Free']
+
     elif index == 4:
+
         ylabel = "difference of the average mimium order cost of each kitchen"
         title = "Minimum Order Cost Differences in " + adress1 + " and " + adress2
         patchlabels = [adress1, adress2]
+
     elif index ==5:
+
         ylabel = "difference of the average ratings of each kitchen"
         title = "Rating Differences in " + adress1 + " and " + adress2
         patchlabels = [adress1, adress2, adress2 + ' has no review', adress1 + ' has no review']
@@ -357,13 +400,15 @@ def average_difference(city1, city2, adress1, adress2, index):
     plt.show()
     return fig
     
+#TODO typing and return type
 def multiple_bars_num_of_kitchens(list_of_cities, list_of_city_names, list_kitchen=[]):
-    '''3D plot with multiple bars, to illustrate the amount of kitchens per city.
+    """3D plot with multiple bars, to illustrate the amount of kitchens per city.
     
     Keyword arguments: 
-    list_of_cities -- list of lists with restaurants for each city
+    list_of_cities     -- list of lists with restaurants for each city
     list_of_city_names -- name of all cities 
-    list_kitchen -- kitchen to observe (optional)'''
+    list_kitchen       -- kitchen to observe (optional)
+    """
 
     number_cities = len(list_of_city_names) # number of cities we want to compare
 
@@ -371,7 +416,6 @@ def multiple_bars_num_of_kitchens(list_of_cities, list_of_city_names, list_kitch
 
     if list_kitchen != []:
         all_kitchens = list_kitchen # Use the kitchens provided by the optional input list_kitchen
-        
     else:
         all_kitchens = get_all_kitchens(list_of_cities)
         
@@ -385,6 +429,7 @@ def multiple_bars_num_of_kitchens(list_of_cities, list_of_city_names, list_kitch
     yticks = []
 
     for i in range(number_cities):
+
         colors.append(cmap[i%len(cmap)]) #if more than 4 cities, then reuse the colors
         yticks.append(number_cities-i)
     
@@ -392,6 +437,7 @@ def multiple_bars_num_of_kitchens(list_of_cities, list_of_city_names, list_kitch
     for a, b, i in zip(colors, yticks, range(number_cities)):
 
         xs = np.arange(len(all_kitchens))
+
         #xs = [5*i for i in xs] #TODO check if necessary 
         ys = number_kitchens[i]
 
@@ -411,8 +457,9 @@ def multiple_bars_num_of_kitchens(list_of_cities, list_of_city_names, list_kitch
 
     return fig
 
+#TODO typing and return type
 def heatmap(list_of_cities, list_of_city_names, index=-1): #TODO check if amount of kitchens correct
-    '''Compare cities amount of kitchen or averages in a heatmap.'''
+    """Compare cities amount of kitchen or averages in a heatmap."""
 
     number_cities = len(list_of_city_names) # number of cities we want to compare
 
@@ -424,7 +471,10 @@ def heatmap(list_of_cities, list_of_city_names, index=-1): #TODO check if amount
     data = num_of_kitchens
 
     if num_of_averages != []:
-        data = num_of_averages # If index is given, then use averages
+
+        data = num_of_averages
+
+        # If index is given, then use averages 
         if index == 2:
             title = "Average of delivery time in each city per kitchen"
         elif index == 3:
@@ -437,6 +487,7 @@ def heatmap(list_of_cities, list_of_city_names, index=-1): #TODO check if amount
     fig, ax = plt.subplots()
 
     if -1 in data:
+
         im = ax.imshow(data, cmap='inferno')
         
         maximum = max(max(data)) #Get the maximum 
@@ -447,19 +498,25 @@ def heatmap(list_of_cities, list_of_city_names, index=-1): #TODO check if amount
 
         cbar = fig.colorbar(im, ticks=ticks)
         labels = []
+
         for tick in ticks:
+
             if tick == -1:
                 labels.append('Closed for delivery')
             else:
                 labels.append(str(math.floor(tick))) #TODO evtl. besser Runden auf 5er bzw. 10er
+
         cbar.ax.set_yticklabels(labels)        
+
     else: 
+
         im = ax.imshow(data, cmap='inferno')
         fig.colorbar(im)
 
     # We want to show all ticks...
     ax.set_xticks(np.arange(len(all_kitchens)))
     ax.set_yticks(np.arange(len(list_of_city_names)))
+    
     # ... and label them with the respective list entries
     ax.set_xticklabels(all_kitchens)
     ax.set_yticklabels(list_of_city_names)

@@ -1,15 +1,9 @@
 # Functions for manipulating and flattening data
 
-#TODO DOCSTRING REFINING
-"""
-helper function to get fitting key for value
-params:
-    d: the dictionary to be searched for a key
-    val: the value to be searched for
-return: fitting key or None if no key was found
-"""
-def get_keys_from_value(d: dict, val):
 
+def get_keys_from_value(d: dict, val: object) -> object:
+
+    """Find fitting key for value 'val' in dictionary d and return it."""
     key = [k for k, v in d.items() if val in v]
 
     if key:
@@ -17,16 +11,17 @@ def get_keys_from_value(d: dict, val):
     else:
         return None
 
-#TODO DOCSTRING REFINING
-"""
-Checks the given tags and changes them to class tags based on a dict of form {classtag: ["Subtag_1", "Subtag_2",...]}
-params:
-    restaurants: a list of restaurants in the form of scraper.py output
-    tags: a dict of classtags as keys and subtags as values
-return: list in same shape as input list
-"""
+
 def tag_correction(restaurants: list, tags: dict ) -> list:
 
+    """Change the tags of the restaurants to their upperclass equivalents or if not possible to 'Others'.
+
+    Keyword arguments:
+    restaurants -- [(restaurant_name: str, [type_kitchen1: str, type_kitchen2: str,...]: list, 
+                        time_of_delivery: int, delivery_costs: float, min_order_value: float,
+                        rating: float, number_of_ratings: int): tuple, ...]: list
+    tags        -- A dictionary with upperclass tags as keys and a tuple with subtags as values
+    """
     if restaurants:
 
         for kitchen in restaurants:
@@ -56,13 +51,12 @@ def tag_correction(restaurants: list, tags: dict ) -> list:
                     
 
 
-def kitchen_counter(restaurants: list):
-    '''1. Return a dictionary with kitchens as keys and the number of kitchens as value. 2. Return the total amount of kitchens.
+def kitchen_counter(restaurants: list) -> tuple(dict, int):
+    """ 1. Return a dictionary with kitchens as keys and the number of kitchens as value. 
+        2. Return the total amount of kitchens.
     
-    restaurants : [(Restaurant->str, [kitchen1->str, kitchen2->str,...], 
-                        Lieferzeiten->int, Lieferkosten->float, Mindestbestellwert->float,
-                        Bewertung->float, Bewertungsnazahl->int), ...]
-    ''' 
+    restaurants -- see description at tag_correction(restaurants, tags)
+    """ 
     list_of_kitchens = []
 
     # Collect all kitchens
@@ -72,16 +66,13 @@ def kitchen_counter(restaurants: list):
     # Create dictionary 
     count_kitchens = {kitchen: list_of_kitchens.count(kitchen) for kitchen in list_of_kitchens}
 
-    return count_kitchens, len(list_of_kitchens)
+    return (count_kitchens, len(list_of_kitchens))
 
 
+#TODO Name anpassen e.g. sort_dict_descending()
+def sort_dict(unsorted: dict) -> dict:
 
-def sort_dict(unsorted: dict):
-    '''Returns a dictionary in descending order.
-    
-    unsorted : dict
-    '''
-
+    """Returns a dictionary in descending order."""
     sorted_dict = {}
     # Sort the keys in descending order
     sorted_keys = sorted(unsorted, key=unsorted.get, reverse=True)
@@ -94,18 +85,20 @@ def sort_dict(unsorted: dict):
 
 
 def get_average(restaurants: list, index: int): 
-    '''Calculate the average.
+    """Calculate the average.
     
     Keyword arguments:
-    restaurants -- see kitchen_counter(restaurants)
-    index --    2: Average of delivery time 
-                3: Average of delivery cost
-                4: Average of minimum order amount
-                5: Average of the ratings
-    '''
+    restaurants -- see tag_correction(restaurants, tags)
+    #TODO Was passiert bei 1?
+    index       --  2: Average of delivery time 
+                    3: Average of delivery cost
+                    4: Average of minimum order amount
+                    5: Average of the ratings
+    """
     #TODO probablity more efficient version or better to just use mean()
     
     if index in [2, 3, 4, 5]: 
+
         list_of_kitchens = []
 
         # Collect all kitchens 
@@ -116,31 +109,33 @@ def get_average(restaurants: list, index: int):
         # Create dictionary with a list of two elements: 0: Add all values 1: Total number of added values
         average = {kitchen: [0,0] for kitchen in list_of_kitchens}
 
-        
         for restaurant in restaurants:
             for kitchen in restaurant[1]:
                 if restaurant[index] != -1:
-                    if not(index == 5 and restaurant[6] == 0): # Restaurants with zero reviews will not be included 
+                    # Restaurants with zero reviews will not be included
+                    if not(index == 5 and restaurant[6] == 0):  
+
                         average[kitchen][0] += restaurant[index]
                         average[kitchen][1] += 1
 
-        average = {kitchen: (average[kitchen][0]/average[kitchen][1]) for kitchen in list(average.keys())}
+        average = {kitchen: (average[kitchen][0] / average[kitchen][1]) for kitchen in list(average.keys())}
 
         return average
 
 
 
-def get_all_kitchens(cities: list):
-    '''Return all kitchens of multiple cities.
+def get_all_kitchens(cities: list) -> list:
+    """Return all kitchens of multiple cities.
     
     Keyword arguments:
     cities -- List with lists of restaurants as elements
-    '''
+    """
 
     all_kitchens = []
 
      # add all kitchens
     for city in cities:
+
         prep, _ = kitchen_counter(city)
         all_kitchens.append(list(prep.keys()))
 
@@ -153,40 +148,49 @@ def get_all_kitchens(cities: list):
     return all_kitchens
 
 
-def kitchens_averages_of_multiple_cities(cities: list, all_kitchens: list, index=-1):
-    '''Return the number of cities and the average of a given index as a list of lists with values.
+def kitchens_averages_of_multiple_cities(cities: list, all_kitchens: list, index: int =-1) -> tuple(list, list):
+    """Return the number of cities and the average of a given index as a list of lists with values.
     Keyword arguments:
-    cities -- List with list of restaurants as elements
+    cities       -- List with list of restaurants as elements
     all_kitchens -- List of kitchens
-    index --    -1: no average (default)
-                2: Averages of delivery time 
-                3: Averages of delivery cost
-                4: Averages of minimum order amount
-                5: Averages of the ratings
-    
-    '''
+    index        --    -1: no average (default)
+                        2: Averages of delivery time 
+                        3: Averages of delivery cost
+                        4: Averages of minimum order amount
+                        5: Averages of the ratings
+    """
     number_kitchens = []
     average = []
     
     # Create a list for all cities and append the numbers/averages for all kitchens.  
     for city in cities:
+
         helper1 = []
         helper2 = []
         prep, _ = kitchen_counter(city)
+
         if index != -1:
             avg = get_average(city, index)
         else:
             avg = get_average(city, 2) 
+
         for kitchen in all_kitchens:
+
             if kitchen not in prep.keys():
+
                 helper1.append(0)
                 helper2.append(-1)
+
             elif kitchen not in avg.keys():
+
                 helper2.append(-1)
                 helper1.append(prep[kitchen])
+
             else: 
+
                 helper1.append(prep[kitchen])
                 helper2.append(avg[kitchen])
+                
         #Append the lists for each cities
         number_kitchens.append(helper1) 
         average.append(helper2)
