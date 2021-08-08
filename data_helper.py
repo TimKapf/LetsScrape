@@ -151,7 +151,7 @@ def get_all_kitchens(cities: list):
     return all_kitchens
 
 
-def kitchens_averages_of_multiple_cities(cities: list, all_kitchens: list, index=-1: int):
+def kitchens_averages_of_multiple_cities(cities: list, all_kitchens: list, index=-1):
     '''Return the number of cities and the average of a given index as a list of lists with values.
     Keyword arguments:
     cities -- List with list of restaurants as elements
