@@ -5,6 +5,8 @@ from mpl_toolkits.mplot3d import axes3d
 from matplotlib import style
 import numpy as np
 from data_helper import kitchen_counter, sort_dict, get_average, get_all_kitchens, kitchens_averages_of_multiple_cities
+import statistics
+import math
 
 #!!! Important, data manipulation and data helper moved to file "data_helper.py"
 #!!! function  "prepare_data" renamed in "kitchen_counter"
@@ -34,7 +36,7 @@ def basic_pie(list_of_restaurants):
                         Bewertung->float, Bewertungsnazahl->int), ...]
     '''
 
-    count_kitchens, total_number_of_kitchens = kirchen_counter(list_of_restaurants)
+    count_kitchens, total_number_of_kitchens = kitchen_counter(list_of_restaurants)
     count_kitchens = sort_dict(count_kitchens) 
     num_restaurants = len(list_of_restaurants)
 
@@ -140,7 +142,7 @@ def avg_bar(list_of_restaurants, index):
 def basic_bar(list_of_restaurants):
     '''Return a bar plot which illustrates the percentage of each kitchen with the total amount of each kitchen.'''
 
-    count_kitchens, total_number_of_kitchens = kirchen_counter(list_of_restaurants)
+    count_kitchens, total_number_of_kitchens = kitchen_counter(list_of_restaurants)
 
     count_kitchens = sort_dict(count_kitchens)
 
@@ -269,11 +271,16 @@ def difference_plot(difference_dict, ylabel, title, values_city1, values_city2, 
     sizes = list(difference_dict.values())
 
     if patchlabel != False:
-        patch1 = mpatches.Patch(color=cmap[0], label=patchlabel[0])
-        patch2 = mpatches.Patch(color=cmap[1], label=patchlabel[1])
-        patch3 = mpatches.Patch(color=cmap[2], label=patchlabel[2])
-        patch4 = mpatches.Patch(color=cmap[3], label=patchlabel[3])
-        patchlabel = [patch1, patch2, patch3, patch4]
+        if len(patchlabel) == 2:
+            patch1 = mpatches.Patch(color=cmap[0], label=patchlabel[0])
+            patch2 = mpatches.Patch(color=cmap[1], label=patchlabel[1])
+            patchlabel = [patch1, patch2]
+        elif len(patchlabel) == 4:
+            patch1 = mpatches.Patch(color=cmap[0], label=patchlabel[0])
+            patch2 = mpatches.Patch(color=cmap[1], label=patchlabel[1])
+            patch3 = mpatches.Patch(color=cmap[2], label=patchlabel[2])
+            patch4 = mpatches.Patch(color=cmap[3], label=patchlabel[3])
+            patchlabel = [patch1, patch2, patch3, patch4]
 
 
     fig = bar(labels, sizes, colors, ylabel, title, patchlabel)
@@ -288,8 +295,8 @@ def kitchen_difference(city1, city2, adress1, adress2):
     city1, city2 -- list of restaurants for each city
     adress1, adress2 -- name of the adress of each city'''
 
-    count_kitchens_c1, _ = kirchen_counter(city1)
-    count_kitchens_c2, _ = kirchen_counter(city2)
+    count_kitchens_c1, _ = kitchen_counter(city1)
+    count_kitchens_c2, _ = kitchen_counter(city2)
 
     all_kitchen = list(dict.fromkeys(list(count_kitchens_c1.keys()) + list(count_kitchens_c2.keys())))
 
@@ -317,8 +324,8 @@ def average_difference(city1, city2, adress1, adress2, index):
     average_city1 = get_average(city1, index)
     average_city2 = get_average(city2, index)
 
-    #count_kitchens_c1 , _ = kirchen_counter(city1)
-    #count_kitchens_c2 , _ = kirchen_counter(city2)
+    #count_kitchens_c1 , _ = kitchen_counter(city1)
+    #count_kitchens_c2 , _ = kitchen_counter(city2)
 
     kitchen_intersection = set(average_city1.keys()).intersection(set(average_city2.keys()))
 
@@ -331,6 +338,7 @@ def average_difference(city1, city2, adress1, adress2, index):
     if index == 2:
         ylabel = "difference of the average delivery time of each kitchen"
         title = "Delivery time Differences"
+        patchlabels = [adress1, adress2]
     elif index == 3:
         ylabel = "difference of the average delivery cost of each kitchen"
         title = "Delivery Cost Differences"
@@ -338,6 +346,7 @@ def average_difference(city1, city2, adress1, adress2, index):
     elif index == 4:
         ylabel = "difference of the average mimium order cost of each kitchen"
         title = "Minimum Order Cost Differences"
+        patchlabels = [adress1, adress2]
     elif index ==5:
         ylabel = "difference of the average ratings of each kitchen"
         title = "Rating Differences"

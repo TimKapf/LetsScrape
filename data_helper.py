@@ -104,6 +104,7 @@ def get_average(restaurants: list, index: int):
                 5: Average of the ratings
     '''
     #TODO probablity more efficient version or better to just use mean()
+    
     if index in [2, 3, 4, 5]: 
         list_of_kitchens = []
 
@@ -119,8 +120,9 @@ def get_average(restaurants: list, index: int):
         for restaurant in restaurants:
             for kitchen in restaurant[1]:
                 if restaurant[index] != -1:
-                    average[kitchen][0] += restaurant[index]
-                    average[kitchen][1] += 1
+                    if not(index == 5 and restaurant[6] == 0): # Restaurants with zero reviews will not be included 
+                        average[kitchen][0] += restaurant[index]
+                        average[kitchen][1] += 1
 
         average = {kitchen: (average[kitchen][0]/average[kitchen][1]) for kitchen in list(average.keys())}
 
@@ -151,7 +153,7 @@ def get_all_kitchens(cities: list):
     return all_kitchens
 
 
-def kitchens_averages_of_multiple_cities(cities: list, all_kitchens: list, index=-1: int):
+def kitchens_averages_of_multiple_cities(cities: list, all_kitchens: list, index=-1):
     '''Return the number of cities and the average of a given index as a list of lists with values.
     Keyword arguments:
     cities -- List with list of restaurants as elements
@@ -165,12 +167,12 @@ def kitchens_averages_of_multiple_cities(cities: list, all_kitchens: list, index
     '''
     number_kitchens = []
     average = []
-
+    
     # Create a list for all cities and append the numbers/averages for all kitchens.  
     for city in cities:
         helper1 = []
         helper2 = []
-        prep, _ = prepare_data(city)
+        prep, _ = kitchen_counter(city)
         if index != -1:
             avg = get_average(city, index)
         else:
