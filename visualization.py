@@ -28,7 +28,7 @@ def get_pdf(list_of_figures, pdf_name):
     
     pdf.close()
 
-def basic_pie(list_of_restaurants):
+def basic_pie(list_of_restaurants, , city_name: str = ""):
     '''Return a pie plot which illustrates the distribution of kitchens.
     
     list_of_restaurants : [(Restaurant->str, [kitchen1->str, kitchen2->str,...], 
@@ -62,7 +62,7 @@ def basic_pie(list_of_restaurants):
     
     fig1, ax1 = plt.subplots()
     ax1.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90)
-    ax1.set_title("Distributions of kitchens")
+    ax1.set_title("Distributions of kitchens " + city_name)
 
     #draw circle 
     centre = plt.Circle((0,0), 0.7, fc='white')
@@ -108,7 +108,7 @@ def bar(labels, sizes, colors, ylabel, title, patches=False):
 
     return fig 
 
-def avg_bar(list_of_restaurants, index):
+def avg_bar(list_of_restaurants, index, city_name: str = ""):
     '''Return a bar plot for averages.'''
     
 
@@ -120,16 +120,16 @@ def avg_bar(list_of_restaurants, index):
     # Set ylabel and title for each possible index 
     if index == 2:
         ylabel = "Average delivery time"
-        title = "Comparison of the average delivery times per kitchen"
+        title = "Comparison of the average delivery times per kitchen " + city_name
     elif index == 3:
         ylabel = "Average delivery cost"
-        title = "Comparison of the average delivery cost per kitchen"
+        title = "Comparison of the average delivery cost per kitchen " + city_name
     elif index == 4:
         ylabel = "Average minimum amount for an order"
-        title = "Comparison of the average minmum amounts for an order"
+        title = "Comparison of the average minmum amounts for an order " + city_name
     elif index == 5:
         ylabel = "Average rating"
-        title = "Comparison of the average rating for an order"
+        title = "Comparison of the average rating for an order " + city_name
     
     # set the color
     colors = 'b'
@@ -139,7 +139,7 @@ def avg_bar(list_of_restaurants, index):
     plt.show()
     return fig
 
-def basic_bar(list_of_restaurants):
+def basic_bar(list_of_restaurants, city_name: str = ""):
     '''Return a bar plot which illustrates the percentage of each kitchen with the total amount of each kitchen.'''
 
     count_kitchens, total_number_of_kitchens = kitchen_counter(list_of_restaurants)
@@ -173,12 +173,12 @@ def basic_bar(list_of_restaurants):
     patch5 = mpatches.Patch(color=cmap[4], label='> 50')
 
     patches = [patch1, patch2, patch3, patch4, patch5]
-    plot = bar(labels, sizes, colors, 'Percent', 'Distributions of kitchens', patches)
+    plot = bar(labels, sizes, colors, 'Percent', 'Distributions of kitchens ' + city_name, patches)
     
     plt.show()
     return plot
 
-def discrete_distribution(list_of_restaurants, kitchen_tags):
+def discrete_distribution(list_of_restaurants, kitchen_tags, , city_name: str = ""):
     '''Return a horizontal bar plot which illustrates the ratings categorized in each kitchen.
     
     Keyword arguments:
@@ -240,6 +240,7 @@ def discrete_distribution(list_of_restaurants, kitchen_tags):
 
     ax.legend(ncol=len(category_names), bbox_to_anchor=(0, 1),
               loc='lower left', fontsize='small')
+    ax.set_title("Rating distribution " + city_name)
 
     plt.show()
     return fig
@@ -312,7 +313,7 @@ def kitchen_difference(city1, city2, adress1, adress2):
     differ = sort_dict(differ)
 
     ylabel = "difference of the amount of kitchens"
-    title = 'Distributions of kitchens'
+    title = 'Distributions of kitchens in ' + adress1 + " and " + adress2
     patchlabels = [adress1, adress2, "only " + adress1, "only " + adress2]
 
     fig = difference_plot(differ, ylabel, title, count_kitchens_c1, count_kitchens_c2, patchlabels)
@@ -337,19 +338,19 @@ def average_difference(city1, city2, adress1, adress2, index):
     patchlabels = False
     if index == 2:
         ylabel = "difference of the average delivery time of each kitchen"
-        title = "Delivery time Differences"
+        title = "Delivery time Differences in" + adress1 + " and " + adress2
         patchlabels = [adress1, adress2]
     elif index == 3:
         ylabel = "difference of the average delivery cost of each kitchen"
-        title = "Delivery Cost Differences"
+        title = "Delivery Cost Differences in " + adress1 + " and " + adress2
         patchlabels = [adress1, adress2, adress2 + ': Free', adress1 + ': Free']
     elif index == 4:
         ylabel = "difference of the average mimium order cost of each kitchen"
-        title = "Minimum Order Cost Differences"
+        title = "Minimum Order Cost Differences in " + adress1 + " and " + adress2
         patchlabels = [adress1, adress2]
     elif index ==5:
         ylabel = "difference of the average ratings of each kitchen"
-        title = "Rating Differences"
+        title = "Rating Differences in " + adress1 + " and " + adress2
         patchlabels = [adress1, adress2, adress2 + ' has no review', adress1 + ' has no review']
 
     fig = difference_plot(rating_difference_dict, ylabel, title, average_city1, average_city2, patchlabels)
