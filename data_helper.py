@@ -29,28 +29,28 @@ def tag_correction(restaurants: list, tags: dict ) -> list:
     """
     if restaurants:
 
-        for kitchen in restaurants:
+        for restaurant in restaurants:
             
             i = 0
 
-            while i < len(kitchen[1]):
+            while i < len(restaurant[1]):
 
                 #change to class tag if possible
-                new_tag = get_keys_from_value(tags, kitchen[1][i])
+                new_tag = get_keys_from_value(tags, restaurant[1][i])
 
-                if new_tag not in kitchen[1] and new_tag != None:
+                if new_tag not in restaurant[1] and new_tag != None:
 
-                    del kitchen[1][i]
-                    kitchen[1].insert(0, new_tag)
+                    del restaurant[1][i]
+                    restaurant[1].insert(0, new_tag)
                     i += 1
 
                 else:
 
-                    del kitchen[1][i]
+                    del restaurant[1][i]
 
             #if no classtag was found tag will be "Others"
-            if not kitchen[1] or kitchen[1][0] == None:
-                kitchen[1].append("Others")
+            if not restaurant[1] or restaurant[1][0] == None:
+                restaurant[1].append("Others")
 
     return restaurants
                     
@@ -60,6 +60,7 @@ def kitchen_counter(restaurants: list) -> tuple:
     """ 1. Return a dictionary with kitchens as keys and the number of kitchens as value. 
         2. Return the total amount of kitchens.
     
+    Keyword arguments:
     restaurants -- see description at tag_correction(restaurants, tags)
     """ 
     list_of_kitchens = []
@@ -74,8 +75,7 @@ def kitchen_counter(restaurants: list) -> tuple:
     return (count_kitchens, len(list_of_kitchens))
 
 
-#TODO Name anpassen e.g. sort_dict_descending()
-def sort_dict(unsorted: dict) -> dict:
+def sort_dict_descending(unsorted: dict) -> dict:
 
     """Returns a dictionary in descending order."""
     sorted_dict = {}
@@ -94,13 +94,11 @@ def get_average(restaurants: list, index: int):
     
     Keyword arguments:
     restaurants -- see tag_correction(restaurants, tags)
-    #TODO Was passiert bei 1?
     index       --  2: Average of delivery time 
                     3: Average of delivery cost
                     4: Average of minimum order amount
                     5: Average of the ratings
     """
-    #TODO probablity more efficient version or better to just use mean()
     
     if index in [2, 3, 4, 5]: 
 
@@ -155,6 +153,7 @@ def get_all_kitchens(cities: list) -> list:
 
 def kitchens_averages_of_multiple_cities(cities: list, all_kitchens: list, index: int =-1) -> tuple:
     """Return the number of cities and the average of a given index as a list of lists with values.
+
     Keyword arguments:
     cities       -- List with list of restaurants as elements
     all_kitchens -- List of kitchens
@@ -205,22 +204,21 @@ def kitchens_averages_of_multiple_cities(cities: list, all_kitchens: list, index
     
     return number_kitchens, average
 
-def get_number(String: str) -> float: #TODO  variable klein schrieben 
+def get_number(string: str) -> float: 
 	"""This function returns the numbers of type float which appear in the given String. Lieferando.de uses the german format to represent point numbers, therefore "," will be transformed to ".".
 	 Only works for the german format."""
-    #TODO Error potential if more than one , 
-	result = ''.join(x for x in String if x.isdigit() or x == ',')
+	result = ''.join(x for x in string if x.isdigit() or x == ',')
 	if result == "":
 		return -1.0
 	result = float(result.replace(',','.'))
 	return result
 
-def explicit_wait(driver: webdriver.Chrome, class_name: str, waiting_time: int):
-    
+def explicit_wait(driver: webdriver.Chrome, class_name: str, waiting_time: int) -> None:
+    """Wait until elements of given class are loaded or until waiting_time has passed."""
     try:
-	    my_elem = WebDriverWait(driver, waiting_time).until(EC.presence_of_element_located((By.CLASS_NAME, class_name)))
-	except TimeoutException:
-		pass
+        WebDriverWait(driver, waiting_time).until(EC.presence_of_element_located((By.CLASS_NAME, class_name)))
+    except TimeoutException:
+        print(TimeoutException)
 
 
 

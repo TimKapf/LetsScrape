@@ -1,15 +1,10 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver import ActionChains
 from selenium.common.exceptions import NoSuchElementException
-
-
-from data_helper import get_number
+from data_helper import get_number, explicit_wait
 import time
 
 
-
-# TODO time.sleep ersetzen
 def restaurants(adress: str) -> list:
 	"""This funtion will return a list of tuples.
 	Each tuple represents one restaurant which can be found at the input variable (adress) on Lieferando.de.
@@ -19,22 +14,19 @@ def restaurants(adress: str) -> list:
 	"""
 
 	# Copy the path of the chromedriver in here
-	PATH = "/Users/tkapferer/Uni/LetsScrape/chromedriver_91"  
-	driver = webdriver.Chrome(PATH) 
+	PATH = "chromedriver_91.exe"#"/Users/tkapferer/Uni/LetsScrape/chromedriver_91"  
+	driver = webdriver.Chrome(executable_path=PATH) 
 	# Enter adress on Lieferando and search for it
 	driver.get("https://www.lieferando.de")
 	search = driver.find_element_by_id("imysearchstring")
 	search.click()
 	search.send_keys(adress)
 
-	explicit_wait('lp__place.notranslate.selected')
+	explicit_wait(driver,'lp__place.notranslate.selected', 8)
 
 	search.send_keys(Keys.ENTER)
 	
-	try:
-		my_elem = WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.CLASS_NAME, 'restaurant_amount')))
-	except TimeoutException:
-		pass
+	explicit_wait(driver,'restaurant_amount',15)
 
 	restaurants = []
 
@@ -99,7 +91,7 @@ def restaurants(adress: str) -> list:
 
 
 if __name__ == '__main__':
-	print(restaurants("Osnabrueck"))
+	print(restaurants("Frankfurt am Main hbf"))
 	
 
 
