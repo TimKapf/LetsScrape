@@ -4,6 +4,7 @@ import scraper
 import data_helper
 import visualization
 
+
 #TODO Input of parameters
 print("Hello dere pls gib in welchen Modus")
 print("1. einzelne Stadt")

@@ -1,3 +1,8 @@
+from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+from selenium.common.exceptions import TimeoutException
 # Functions for manipulating and flattening data
 
 
@@ -51,7 +56,7 @@ def tag_correction(restaurants: list, tags: dict ) -> list:
                     
 
 
-def kitchen_counter(restaurants: list) -> tuple(dict, int):
+def kitchen_counter(restaurants: list) -> tuple:
     """ 1. Return a dictionary with kitchens as keys and the number of kitchens as value. 
         2. Return the total amount of kitchens.
     
@@ -148,7 +153,7 @@ def get_all_kitchens(cities: list) -> list:
     return all_kitchens
 
 
-def kitchens_averages_of_multiple_cities(cities: list, all_kitchens: list, index: int =-1) -> tuple(list, list):
+def kitchens_averages_of_multiple_cities(cities: list, all_kitchens: list, index: int =-1) -> tuple:
     """Return the number of cities and the average of a given index as a list of lists with values.
     Keyword arguments:
     cities       -- List with list of restaurants as elements
@@ -199,6 +204,23 @@ def kitchens_averages_of_multiple_cities(cities: list, all_kitchens: list, index
         average = []
     
     return number_kitchens, average
+
+def get_number(String: str) -> float: #TODO  variable klein schrieben 
+	"""This function returns the numbers of type float which appear in the given String. Lieferando.de uses the german format to represent point numbers, therefore "," will be transformed to ".".
+	 Only works for the german format."""
+    #TODO Error potential if more than one , 
+	result = ''.join(x for x in String if x.isdigit() or x == ',')
+	if result == "":
+		return -1.0
+	result = float(result.replace(',','.'))
+	return result
+
+def explicit_wait(driver: webdriver.Chrome, class_name: str, waiting_time: int):
+    
+    try:
+	    my_elem = WebDriverWait(driver, waiting_time).until(EC.presence_of_element_located((By.CLASS_NAME, class_name)))
+	except TimeoutException:
+		pass
 
 
 

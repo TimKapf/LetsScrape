@@ -2,20 +2,12 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver import ActionChains
 from selenium.common.exceptions import NoSuchElementException
+
+
+from data_helper import get_number
 import time
 
 
-
-
-def get_number(String: str) -> float:
-	"""This function returns the numbers of type float which appear in the given String. Lieferando.de uses the german format to represent point numbers, therefore "," will be transformed to ".".
-	 Only works for the german format."""
-    #TODO Error potential if more than one , 
-	result = ''.join(x for x in String if x.isdigit() or x == ',')
-	if result == "":
-		return -1.0
-	result = float(result.replace(',','.'))
-	return result
 
 # TODO time.sleep ersetzen
 def restaurants(adress: str) -> list:
@@ -27,22 +19,22 @@ def restaurants(adress: str) -> list:
 	"""
 
 	# Copy the path of the chromedriver in here
-	PATH = "chromedriver_91.exe"  
-	driver = webdriver.Chrome(executable_path=PATH) 
+	PATH = "/Users/tkapferer/Uni/LetsScrape/chromedriver_91"  
+	driver = webdriver.Chrome(PATH) 
 	# Enter adress on Lieferando and search for it
 	driver.get("https://www.lieferando.de")
 	search = driver.find_element_by_id("imysearchstring")
 	search.click()
 	search.send_keys(adress)
-	time.sleep(2)
+
+	explicit_wait('lp__place.notranslate.selected')
+
 	search.send_keys(Keys.ENTER)
-
-    #TODO Check if there is a nicer way to wait, might also fail if the brower/internet is slow
-	#time.sleep(2) # seconds
-
-	#driver.find_element_by_id("submit_deliveryarea").click()
-
-	time.sleep(2) # seconds
+	
+	try:
+		my_elem = WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.CLASS_NAME, 'restaurant_amount')))
+	except TimeoutException:
+		pass
 
 	restaurants = []
 
@@ -107,7 +99,7 @@ def restaurants(adress: str) -> list:
 
 
 if __name__ == '__main__':
-	print(restaurants("Osnabrück"))
+	print(restaurants("Osnabrueck"))
 	
 
 
