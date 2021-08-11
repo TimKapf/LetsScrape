@@ -310,7 +310,7 @@ def avg_difference(city1: list, city2: list, adress1: str, adress2: str, index: 
     if index == 2:
 
         ylabel = "difference of the average delivery time of each kitchen"
-        title = "Delivery time Differences in" + adress1 + " and " + adress2
+        title = "Delivery time Differences in " + adress1 + " and " + adress2
         patchlabels = [adress1, adress2]
 
     elif index == 3:
