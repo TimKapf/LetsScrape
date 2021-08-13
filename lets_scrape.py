@@ -6,7 +6,6 @@ from ui_helper import draw_options, get_plots, avg_options, get_pdf
 
 #TODO Handel Falscheingabe 
 
-#TODO not integrated yet
 kitchens = {"Asiatisch": ["Sushi", "Japanisch", "Poke bowl", "Indisch", "Thailändisch", "Curry",
                         "Vietnamesisch", "Chinesisch", "Koreanisch", "Dumplings", "Indonesisch", "Pakistanisch"],
         "Orientalisch": ["Türkisch", "Döner", "Falafel", "100% Halal", "Persisch", "Türkische Pizza",
@@ -16,7 +15,6 @@ kitchens = {"Asiatisch": ["Sushi", "Japanisch", "Poke bowl", "Indisch", "Thailä
         "Vegetarisch": ["Vegan"],
         "Cafe & Kuchen": ["Eiscreme", "Snacks", "Kuchen", "Nachspeisen", "Backwaren", "Café", "Frühstück"]}
 
-#TODO eine pdf oder mehrere
 selected_plots_one = []
 selected_plots_two = []
 selected_plots_three = []
@@ -69,16 +67,32 @@ while True:
         break
     selection.append(int(plot_type))
 
-if selection == 0:
+if selection == 0: # TODO FIX
+    one_helper = {city: [] for city in citys}
+    two_helper = {city: [] for city in citys}
+    three_helper = {city: [] for city in citys}
     for s in range(1, 7):
         selected_plots_one, selected_plots_two, selected_plots_three = get_plots(decision, len(citys_scraped), s, citys_scraped, citys)
+        if len(citys_scraped) == 1 or decision == 1 or decision == 3:
+            for city in one_helper:
+                one_helper[city].append(selected_plots_one[city])
+        if len(citys_scraped) == 2 and (decision == 2 or decision == 3):
+            for city in two_helper:
+                two_helper[city].append(selected_plots_two[city])
+        if len(citys_scraped) == 3 and (decision == 2 or decision == 3):
+            for city in three_helper:
+                three_helper[city].append(selected_plots_three[city])
         
 else:
     for s in selection:
         selected_plots_one, selected_plots_two, selected_plots_three = get_plots(decision, len(citys_scraped), s, citys_scraped, citys)
     
+# TODO city names richtig machen
+print(selected_plots_one, selected_plots_two, selected_plots_three)
+
 if selected_plots_one:
-    get_pdf(selected_plots_one, 'plotsone.pdf')
+    for city in selected_plots_one:
+        get_pdf(selected_plots_one[city], city + '.pdf')
 if selected_plots_two:
     get_pdf(selected_plots_two, "plotstwo.pdf")
 if selected_plots_three:

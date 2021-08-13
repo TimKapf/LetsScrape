@@ -72,23 +72,23 @@ def get_plots(mode: int, number_cities: int, selection: int, scraped_cities: lis
     name_cities         -- name of the scraped cities
     start_selection     -- to enumerate correctly for mode 3
     """
-    selected_plots_one = []
+    selected_plots_one = {city_name: [] for city_name in name_cities}
     selected_plots_two = []
     selected_plots_three = []
 
     if mode == 1:
         if selection == 1:
             for s_city, n_city in zip(scraped_cities, name_cities):
-                selected_plots_one.append(visualization.basic_pie(s_city, n_city))
+                selected_plots_one[n_city].append(visualization.basic_pie(s_city, n_city))
         if selection == 2:
             for s_city, n_city in zip(scraped_cities, name_cities):
-                selected_plots_one.append(visualization.basic_bar(s_city, n_city))
+                selected_plots_one[n_city].append(visualization.basic_bar(s_city, n_city))
         if selection == 3:
             selection_avg = avg_options()
             for s_city, n_city in zip(scraped_cities, name_cities):
                 for avg_type in selection_avg:
                     avg_type += 1
-                    selected_plots_one.append(visualization.avg_bar(s_city, avg_type, n_city)) 
+                    selected_plots_one[n_city].append(visualization.avg_bar(s_city, avg_type, n_city)) 
     elif mode == 2:
         if number_cities == 2:
             if selection == start_selection: 
