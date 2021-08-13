@@ -2,7 +2,6 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
 from data_helper import get_number, explicit_wait
-import time
 
 
 def restaurants(adress: str) -> list:

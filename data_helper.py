@@ -218,7 +218,9 @@ def explicit_wait(driver: webdriver.Chrome, class_name: str, waiting_time: int) 
     try:
         WebDriverWait(driver, waiting_time).until(EC.presence_of_element_located((By.CLASS_NAME, class_name)))
     except TimeoutException:
-        print(TimeoutException)
+        # We only run into a TimeoutException at a point where there is no reason to throw one 
+        # but that seems to be a bug inside of Selenium so we ignore it, since we need the waiting to be in a try-catch block  
+        pass
 
 
 

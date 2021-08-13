@@ -6,7 +6,7 @@ from data_helper import kitchen_counter, sort_dict_descending, get_average, get_
 import statistics
 import math
 
-
+#TODO in neuen Ordner
 def get_pdf(list_of_figures: list, pdf_name: str) -> None:
     """Create a pdf with given plots in a list.
     
@@ -76,7 +76,7 @@ def basic_pie(list_of_restaurants: list, city_name: str = "") -> plt.figure:
     ax1.axis('equal')  
     plt.tight_layout()
     
-    plt.show()
+    #plt.show()
     return fig1
 
 #TODO datatypes and return type
@@ -391,7 +391,7 @@ def kitchen_distribution_3D(cities: list, city_names: list, kitchens: list=[]) -
     ax.set_zlabel('Total number of kitchens')
     #plt.tick_params(axis='x', which='major', labelsize=7)
 
-    plt.tight_layout()
+    #plt.tight_layout()
 
     plt.show()
 
