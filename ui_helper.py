@@ -8,7 +8,7 @@ def get_pdf(list_of_figures: list, pdf_name: str) -> None:
     list_of_figures -- list of matplotlib figures
     pdf_name        -- Name of the pdf file.
     """
-    pdf = PdfPages(pdf_name)
+    pdf = PdfPages('Output/' + pdf_name)
 
     for fig in list_of_figures:
         pdf.savefig(fig)
