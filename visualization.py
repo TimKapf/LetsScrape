@@ -1,27 +1,9 @@
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
-from matplotlib.backends.backend_pdf import PdfPages
 import numpy as np
 from data_helper import kitchen_counter, sort_dict_descending, get_average, get_all_kitchens, kitchens_averages_of_multiple_cities
 import statistics
 import math
-
-
-def get_pdf(list_of_figures: list, pdf_name: str) -> None:
-    """Create a pdf with given plots in a list.
-    
-    Keyword arguments:
-    list_of_figures -- list of matplotlib figures
-    pdf_name        -- Name of the pdf file.
-    """
-
-    pdf = PdfPages(pdf_name)
-
-    for fig in list_of_figures:
-        pdf.savefig(fig)
-    
-    pdf.close()
-
 
 def basic_pie(list_of_restaurants: list, city_name: str = "") -> plt.figure:
     """Returns a pie plot which illustrates the distribution of kitchens.
@@ -52,6 +34,9 @@ def basic_pie(list_of_restaurants: list, city_name: str = "") -> plt.figure:
         else: 
             kitchen_dict['others'] += count_kitchens[key]
             other_kitchens += key
+
+    if kitchen_dict['others'] == 0:
+        kitchen_dict.pop('others')
 
     count_kitchens = sort_dict_descending(kitchen_dict) 
 
@@ -113,11 +98,23 @@ def bar(labels: list, sizes: list, colors: list, ylabel: str, title: str, patche
     return fig 
 
 
-def avg_bar(list_of_restaurants: list, index: int, city_name: str = "") -> plt.figure:
-    """Return a bar plot for averages."""
+def avg_bar(restaurants: list, index: int, city_name: str = "") -> plt.figure:
+    """Return a bar plot for averages.
+    
+    Keyword arguments:
+    restaurants     -- [(restaurant_name: str, [type_kitchen1: str, type_kitchen2: str,...]: list, 
+                                time_of_delivery: int, delivery_costs: float, min_order_value: float,
+                                rating: float, number_of_ratings: int): tuple, ...]: list
+    index           --      2: Averages of delivery time 
+                            3: Averages of delivery cost
+                            4: Averages of minimum order amount
+                            5: Averages of the ratings
+    city_name       -- name of the city
+
+    """
     
 
-    average = get_average(list_of_restaurants, index)
+    average = get_average(restaurants, index)
 
     labels = list(average.keys())
     sizes = list(average.values())
@@ -152,10 +149,10 @@ def avg_bar(list_of_restaurants: list, index: int, city_name: str = "") -> plt.f
     return fig
 
 
-def basic_bar(list_of_restaurants: list, city_name: str = "") -> plt.figure:
+def basic_bar(restaurants: list, city_name: str = "") -> plt.figure:
     """Return a bar plot which illustrates the percentage of each kitchen with the total amount of each kitchen."""
 
-    count_kitchens, total_number_of_kitchens = kitchen_counter(list_of_restaurants)
+    count_kitchens, total_number_of_kitchens = kitchen_counter(restaurants)
 
     count_kitchens = sort_dict_descending(count_kitchens)
 
