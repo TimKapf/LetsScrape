@@ -384,7 +384,7 @@ def kitchen_distribution_3D(cities: list, city_names: list, kitchens: list=[]) -
 
         ax.bar(xs, ys, zs=b, zdir='y', color=cs, alpha=0.8)
 
-    plt.yticks(yticks, city_names, rotation=90)
+    plt.yticks(yticks, city_names)
     ax.set_zlabel('Total number of kitchens')
     #plt.tick_params(axis='x', which='major', labelsize=7)
 

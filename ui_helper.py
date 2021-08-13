@@ -57,7 +57,8 @@ def avg_options() -> list:
         elif str.lower(avg) == '0':
             selections = [1, 2, 3, 4]
             break
-        selections.append(int(avg))
+        elif str.lower(avg) in ['1', '2', '3', '4']:
+            selections.append(int(avg))
 
     return selections
         
@@ -72,7 +73,7 @@ def get_plots(mode: int, number_cities: int, selection: int, scraped_cities: lis
     name_cities         -- name of the scraped cities
     start_selection     -- to enumerate correctly for mode 3
     """
-    selected_plots_one = {city_name: [] for city_name in name_cities}
+    selected_plots_one = {city: [] for city in name_cities}
     selected_plots_two = []
     selected_plots_three = []
 
@@ -105,8 +106,8 @@ def get_plots(mode: int, number_cities: int, selection: int, scraped_cities: lis
                 selected_plots_three.append(visualization.heatmap(scraped_cities, name_cities))
     elif mode == 3:
         if selection < 4:
-            get_plots(1, number_cities, selection, scraped_cities, name_cities) 
+            return get_plots(1, number_cities, selection, scraped_cities, name_cities) 
         else:
-            get_plots(2, number_cities, selection, scraped_cities, name_cities, 4) 
+            return get_plots(2, number_cities, selection, scraped_cities, name_cities, 4) 
 
     return selected_plots_one, selected_plots_two, selected_plots_three
