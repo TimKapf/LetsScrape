@@ -43,13 +43,13 @@
 
      $ python lets_scrape.py
 
-  and then follow the dialoge. As a result there should appear up to two pdf files in the Project folder.
+  and then follow the dialoge. As a result there should appear up to two pdf files in LetsScrape/Output.
 
   ### Troubleshooting and Remarks
 
 
    #### Entering adresses <br>
-   <ul><li>Lieferando might not find the city. You may use an actual adress or add " Hbf" to the city name.</li> <br>
+   <ul><li>Lieferando might not find the city. You may use an actual adress or add " Hbf" to the city name if the city has a central station or you can add the zip code to the city name.</li> <br>
    <li>For cities which might occur multiple times in germany, you may enter the zip code to the city name. </li></ul>
    
    ##Motivation and Decision making
@@ -63,9 +63,9 @@
    
    Our goal is to compare differnt locations in Germany in terms of diversity, delivery costs, delivery time, ratings etc. and to visualise the results in a convincing and informative way. <br>
    
-   As development moved on we realised that Lieferando.de has a quite liberal policy for restaurants to choose their kitchens. As a exsample a restaurant can have the kitchens "Italienisch, Italienische Pizza, Pasta" which all can be categorized as Italian. So we decided to make our own categories to reduce the number of kitchens, but of course it is still possible to apply the kitchens on Lieferando.de. <br>
+   As development moved on we realised that Lieferando.de has a quite liberal policy for restaurants to choose their kitchens. As an exsample a restaurant can have the kitchens "Italienisch, Italienische Pizza, Pasta" which all can be categorized as Italian. So we decided to make our own categories to reduce the number of kitchens, but of course it is still possible to apply the kitchens on Lieferando.de. <br>
    
-   As you can see there are plenty of kitchens: 
+   As you can see there might be plenty of kitchens: 
    
    
    ![images/Heatmap.png](images/Heatmap.png)
@@ -76,7 +76,14 @@
    ![images/HeatmapClear.png](images/HeatmapClear.png)
    
    ## 5. Structure 
-   
+   We structured our program in five python files. 
+   <ul>
+ <li>scraper.py       - Scrape the information of interest of lieferando.de </li>
+ <li>lets_scrape.py   - User Interface </li>
+ <li>ui_helper.py     - Helper functions for the User Interface </li>
+ <li>visualization.py - Compute the plots using Matplotlib</li>
+ <li>data_helper      - Helper functions to formate and change data
+  </ul>
    
    
    
