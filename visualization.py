@@ -85,7 +85,12 @@ def bar(labels: list, sizes: list, colors: list, ylabel: str, title: str, patche
     ax.set_ylabel(ylabel)
     ax.set_title(title)
 
-    #Draw an average line
+    # set yticks positve in both directions 
+    yticks = ax.get_yticks()
+    ax.set_yticks(yticks)
+    ax.set_yticklabels([round(abs(x), 2) for x in yticks])
+
+    # Draw an average line
     if sizes:
         ax.axhline(statistics.mean(sizes), color='red', linewidth=2)
 
@@ -159,10 +164,14 @@ def basic_bar(restaurants: list, city_name: str = "") -> plt.figure:
     labels = count_kitchens.keys()
     sizes = []
     colors = []
-    cmap = ['darkred', 'red', 'orange', 'green', 'blue']
+    cmap = ['darkred', 'red', 'orange', 'green', 'darkgreen', 'blue', 'darkblue', 'black']
 
     # Add the colors and the values in percent for the bars
+    maximum = 0
     for kitchen in count_kitchens.values():
+
+        if kitchen >= maximum:
+            maximum = kitchen
 
         sizes.append((kitchen/total_number_of_kitchens) * 100)
 
@@ -174,17 +183,37 @@ def basic_bar(restaurants: list, city_name: str = "") -> plt.figure:
             colors.append(cmap[2])
         elif kitchen <= 50:
             colors.append(cmap[3])
-        else: 
+        elif kitchen <= 100:
             colors.append(cmap[4])
+        elif kitchen <= 150:
+            colors.append(cmap[5])
+        elif kitchen <= 200:
+            colors.append(cmap[6])
+        else:
+            colors.append(cmap[7])
 
     # legend for illustrate the total amount of kitchens 
     patch1 = mpatches.Patch(color=cmap[0], label='1')
     patch2 = mpatches.Patch(color=cmap[1], label='<= 5')
     patch3 = mpatches.Patch(color=cmap[2], label='<= 25')
     patch4 = mpatches.Patch(color=cmap[3], label='<= 50')
-    patch5 = mpatches.Patch(color=cmap[4], label='> 50')
+    patch5 = mpatches.Patch(color=cmap[4], label='<= 100')
+    patch6 = mpatches.Patch(color=cmap[5], label='<= 150')
+    patch7 = mpatches.Patch(color=cmap[6], label='<= 200')
+    patch8 = mpatches.Patch(color=cmap[7], label='> 200')
 
-    patches = [patch1, patch2, patch3, patch4, patch5]
+    # Reduce number of patches if not necessary
+    if maximum <= 50:
+        patches = [patch1, patch2, patch3, patch4]
+    elif maximum <= 100:
+        patches = [patch1, patch2, patch3, patch4, patch5]
+    elif maximum <= 150:
+        patches = [patch1, patch2, patch3, patch4, patch5, patch6]
+    elif maximum <= 200:
+        patches = [patch1, patch2, patch3, patch4, patch5, patch6, patch7]
+    else:
+        patches = [patch1, patch2, patch3, patch4, patch5, patch6, patch7, patch8]
+
     plot = bar(labels, sizes, colors, 'Percent', 'Distributions of kitchens ' + city_name, patches)
     
     plt.show()
@@ -403,6 +432,8 @@ def heatmap(cities: list, city_names: list, index: int=-1) -> plt.figure: #TODO 
     all_kitchens = get_all_kitchens(cities)
         
     num_of_kitchens, num_of_averages = np.array(kitchens_averages_of_multiple_cities(cities, all_kitchens, index), dtype=object)
+
+    
 
     title = "Num of kitchen in each city"
     data = num_of_kitchens
