@@ -4,7 +4,7 @@ import data_helper
 import visualization
 from ui_helper import draw_options, get_plots, avg_options, get_pdf
 
-
+# categories for custom kitchen tags
 kitchens = {"Asiatisch": ["Asiatisch", "Sushi", "Japanisch", "Poke bowl", "Indisch", "Thailändisch", "Curry",
                         "Vietnamesisch", "Chinesisch", "Koreanisch", "Dumplings", "Indonesisch", "Pakistanisch"],
         "Orientalisch": ["Orientalisch", "Türkisch", "Döner", "Falafel", "100% Halal", "Persisch", "Türkische Pizza",
@@ -22,6 +22,7 @@ print("Hello. You can get plots for one, two or multiple cities.")
 print("Please enter at least one adress. Type 'x' to stop. \n")
 citys = []
 
+# Input of adresses, stop if the input is x
 while True:
     city = input()
     if str.lower(city) == "x":
@@ -39,6 +40,7 @@ while True:
     if decision == '0':
         helper = []
         for city in citys_scraped:
+            # Use tag_correction to use custom categories of kitchen
             helper.append(data_helper.tag_correction(city, kitchens))
         citys_scraped = helper
         break
@@ -92,7 +94,7 @@ while True:
 
 if selection == 0:
     selection = [1, 2, 3, 4, 5]
-
+# For all elements selected add each plot for a selection variables 
 h_one = {city: [] for city in citys}
 h_two = []
 h_three  = []
@@ -105,8 +107,9 @@ for s in selection:
 selected_plots_one = h_one
 selected_plots_two = h_two
 selected_plots_three = h_three
-    
-if selected_plots_one:
+
+# create pdf for the plots
+if decision == 1 or decision == 3:
     for city in citys:
         get_pdf(selected_plots_one[city], city + '.pdf')
 if selected_plots_two:
@@ -115,5 +118,4 @@ if selected_plots_three:
     name = ''
     for city in citys:
         name += city
-
     get_pdf(selected_plots_three, name + '.pdf')

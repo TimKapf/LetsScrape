@@ -13,8 +13,8 @@ def restaurants(adress: str) -> list:
 	"""
 
 	# Copy the path of the chromedriver in here
-	PATH = "chromedriver_91.exe"#"/Users/tkapferer/Uni/LetsScrape/chromedriver_91"  
-	driver = webdriver.Chrome(executable_path=PATH) 
+	PATH = "/Users/tkapferer/Uni/LetsScrape/chromedriver_91"  
+	driver = webdriver.Chrome(PATH) 
 	# Enter adress on Lieferando and search for it
 	driver.get("https://www.lieferando.de")
 	search = driver.find_element_by_id("imysearchstring")
@@ -38,7 +38,6 @@ def restaurants(adress: str) -> list:
 			restaurant_name = None
 
 		try:
-
 			kitchen =  restaurant.find_element_by_class_name("kitchens").text
 			kitchen = kitchen.split(", ")
 
@@ -46,7 +45,6 @@ def restaurants(adress: str) -> list:
 			kitchen = None
 
 		try: 
-
 			delivery_time = restaurant.find_element_by_class_name("avgdeliverytime.avgdeliverytimefull.open").text
 			
 			if delivery_time.startswith("Ab") or delivery_time.startswith("From"):
@@ -80,7 +78,9 @@ def restaurants(adress: str) -> list:
 		restaurant_tuple = (restaurant_name, kitchen, delivery_time, delivery_cost, min_order, rating, num_of_rating)
 		restaurants.append(restaurant_tuple)
 
+	# Close driver
 	driver.quit()
+	# last list element is always empty 
 	restaurants = restaurants[:-1]
 
 	return restaurants
