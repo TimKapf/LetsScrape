@@ -150,7 +150,7 @@ def avg_bar(restaurants: list, index: int, city_name: str = "") -> plt.figure:
 
     fig = bar(labels, sizes, colors, ylabel, title)
 
-    plt.show()
+    #plt.show()
     return fig
 
 
@@ -216,7 +216,7 @@ def basic_bar(restaurants: list, city_name: str = "") -> plt.figure:
 
     plot = bar(labels, sizes, colors, 'Percent', 'Distributions of kitchens ' + city_name, patches)
     
-    plt.show()
+    #plt.show()
     return plot
 
 
@@ -304,7 +304,7 @@ def kitchen_difference(city1: list, city2: list, adress1: str, adress2: str) -> 
     patchlabels = [adress1, adress2, "only " + adress1, "only " + adress2]
 
     fig = difference_plot(differ, ylabel, title, count_kitchens_c1, count_kitchens_c2, patchlabels)
-    plt.show()
+    #plt.show()
 
     return fig
     
@@ -358,7 +358,7 @@ def avg_difference(city1: list, city2: list, adress1: str, adress2: str, index: 
         patchlabels = [adress1, adress2, adress2 + ' has no review', adress1 + ' has no review']
 
     fig = difference_plot(rating_difference_dict, ylabel, title, average_city1, average_city2, patchlabels)
-    plt.show()
+    #plt.show()
 
     return fig
     
@@ -419,7 +419,7 @@ def kitchen_distribution_3D(cities: list, city_names: list, kitchens: list=[]) -
 
     #plt.tight_layout()
 
-    plt.show()
+    #plt.show()
 
     return fig
 
@@ -498,6 +498,6 @@ def heatmap(cities: list, city_names: list, index: int=-1) -> plt.figure: #TODO 
 
     ax.set_title(title)
     fig.tight_layout()
-    plt.show()
+    #plt.show()
 
     return fig
