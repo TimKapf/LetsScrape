@@ -1,6 +1,7 @@
-#LetsScrape
+# LetsScrape
 ## 1. Overview 
 <img src="images/3d_plot.png" width="200"/>
+
  This is our final project for the course "Scientific Programming in Python" of the University Osnabrück. Our goal is to compare the range of restaurants in different german cities
  available on Lieferando (www.lieferando.de). To gather the data we use Selenium (https://selenium-python.readthedocs.io) and matplotlib (https://matplotlib.org) 
  to visualise the results. 
@@ -55,6 +56,32 @@
    
    Since we are students, we most likely make up a big part of Lieferando's (and other delivery services') customers
    and wanted to have an option to compare different citys and their offers in terms of diversity, delivery costs, delivery time etc.
+   
+   ## 4. Motivation, Goal and Result
+   
+   Early on we agreed to use Webscraping and Matplotlib for the project. Since we are students, we most likely make up a big part of Lieferando's (and other delivery services') customers and we noticed that the Lieferando offer in Osnabrück is quite homogeneous. Mostly pizza and burger. We agreed to scrape information on Lieferando.de to compare Osnabrück with other german cities. <br>
+   
+   Our goal is to compare differnt locations in Germany in terms of diversity, delivery costs, delivery time, ratings etc. and to visualise the results in a convincing and informative way. <br>
+   
+   As development moved on we realised that Lieferando.de has a quite liberal policy for restaurants to choose their kitchens. As a exsample a restaurant can have the kitchens "Italienisch, Italienische Pizza, Pasta" which all can be categorized as Italian. So we decided to make our own categories to reduce the number of kitchens, but of course it is still possible to apply the kitchens on Lieferando.de. <br>
+   
+   As you can see there are plenty of kitchens: 
+   
+   
+   ![images/Heatmap.png](images/Heatmap.png)
+   
+   This is how the heatmap looks like if one applies our categorization:
+   
+   
+   ![images/HeatmapClear.png](images/HeatmapClear.png)
+   
+   ## 5. Structure 
+   
+   
+   
+   
+   
+   
    
 
 
