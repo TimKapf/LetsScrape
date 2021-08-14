@@ -44,9 +44,12 @@ def tag_correction(restaurants: list, tags: dict ) -> list:
                     restaurant[1].insert(0, new_tag)
                     i += 1
 
-                else:
+                elif new_tag != restaurant[1][i]:
 
                     del restaurant[1][i]
+                
+                else:
+                    i+=1
 
             #if no classtag was found tag will be "Others"
             if not restaurant[1] or restaurant[1][0] == None:
