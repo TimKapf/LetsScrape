@@ -4,15 +4,14 @@ import data_helper
 import visualization
 from ui_helper import draw_options, get_plots, avg_options, get_pdf
 
-#TODO Handel Falscheingabe 
 
-kitchens = {"Asiatisch": ["Sushi", "Japanisch", "Poke bowl", "Indisch", "Thailändisch", "Curry",
+kitchens = {"Asiatisch": ["Asiatisch", "Sushi", "Japanisch", "Poke bowl", "Indisch", "Thailändisch", "Curry",
                         "Vietnamesisch", "Chinesisch", "Koreanisch", "Dumplings", "Indonesisch", "Pakistanisch"],
-        "Orientalisch": ["Türkisch", "Döner", "Falafel", "100% Halal", "Persisch", "Türkische Pizza",
+        "Orientalisch": ["Orientalisch", "Türkisch", "Döner", "Falafel", "100% Halal", "Persisch", "Türkische Pizza",
                         "Arabisch", "Syrisch", "Libanesisch", "Gyros", "Griechisch", "Balkanküche"],
-        "Italienisch": ["Italienische Pizza", "Pasta"],
-        "Amerikanisch": ["Burger", "Amerikanische Pizza", "Hot Dog", "Sandwiches", "Mexikanisch", "Argentinisch", "Spareribs"],
-        "Vegetarisch": ["Vegan"],
+        "Italienisch": ["Italienisch", "Italienische Pizza", "Pasta"],
+        "Amerikanisch": ["Amerikanisch", "Burger", "Amerikanische Pizza", "Hot Dog", "Sandwiches", "Mexikanisch", "Argentinisch", "Spareribs"],
+        "Vegetarisch": ["Vegetarisch", "Vegan"],
         "Cafe & Kuchen": ["Eiscreme", "Snacks", "Kuchen", "Nachspeisen", "Backwaren", "Café", "Frühstück"]}
 
 selected_plots_one = []
@@ -34,17 +33,19 @@ citys_scraped = []
 for city in citys:
     citys_scraped.append(scraper.restaurants(city))
 
+print("Would you like to use our custom kitchen tags (0) or the original lieferando kitchen tags (1) ?")
 while True:
-    print("Would you like to use our custom kitchen tags (0) or the original lieferando kitchen tags (1) ?")
-    decision = int(input())
-    if decision == 0:
+    decision = input()
+    if decision == '0':
         helper = []
         for city in citys_scraped:
             helper.append(data_helper.tag_correction(city, kitchens))
         citys_scraped = helper
         break
-    elif decision == 1:
+    elif decision == '1':
         break
+    else:
+        print("Invalid Input. Follow the instruction above!")
 
 
 print("Enter 1, 2 or 3. \n")
@@ -55,6 +56,9 @@ if len(citys_scraped) > 2:
         if decision in ["1", "2", "3"]:
             decision = int(decision)
             break
+        else:
+            print("Invalid Input. Follow the instruction above!")
+
  
 elif len(citys_scraped) == 2:
     print("Please select number. \n 1: Each city separately. \n 2: Plots with both cities represented.  \n 3: Separately and both cities represented.")
@@ -63,6 +67,9 @@ elif len(citys_scraped) == 2:
         if decision in ["1", "2", "3"]:
             decision = int(decision)
             break
+        else:
+            print("Invalid Input. Follow the instruction above!")
+
 else:
     decision = 1
 
@@ -80,6 +87,8 @@ while True:
         break
     elif str.lower(plot_type) in ['1', '2', '3', '4', '5']:
         selection.append(int(plot_type))
+    else:
+        print("Invalid Input. Follow the instruction above!")
 
 if selection == 0:
     selection = [1, 2, 3, 4, 5]
@@ -108,47 +117,3 @@ if selected_plots_three:
         name += city
 
     get_pdf(selected_plots_three, name + '.pdf')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-
-
-
-
-
-
-
-    
-    
-
-
-
-    
-
-
-
-
-
-
-
-    
-
-
