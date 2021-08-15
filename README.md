@@ -112,7 +112,7 @@
   <li>visualization.py - Compute the plots using Matplotlib</li>
   <li>data_helper      - Helper functions to formate and change data
  </ul>
- For an overview on how we store the gathered data please take a look at the [`Juypter-Notebook`](output_examples.ipynb)
+ For an overview on how we store the gathered data please take a look at the [`Juypter-Notebook`](output_examples.ipynb).
    
    
    
