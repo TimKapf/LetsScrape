@@ -111,7 +111,7 @@
   <li>ui_helper.py     - Helper functions for the User Interface </li>
   <li>visualization.py - Compute the plots using Matplotlib</li>
   <li>data_helper      - Helper functions to formate and change data
- </ul>
+ </ul> <br>
  For an overview on how we store the gathered data please take a look at the [`Juypter-Notebook`](output_examples.ipynb).
    
    
