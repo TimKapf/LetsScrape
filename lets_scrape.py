@@ -119,14 +119,14 @@ def main():
             selection = 0
             break
 
-        elif str.lower(plot_type) in ['1', '2', '3', '4', '5']:
+        elif str.lower(plot_type) in ['1', '2', '3', '4', '5', '6']:
             selection.append(int(plot_type))
 
         else:
             print("Invalid Input. Follow the instruction above!")
 
     if selection == 0:
-        selection = [1, 2, 3, 4, 5]
+        selection = [1, 2, 3, 4, 5, 6]
 
     h_one = {city: [] for city in citys}
     h_two = []
@@ -146,7 +146,7 @@ def main():
     selected_plots_two = h_two
     selected_plots_three = h_three
         
-    if selected_plots_one:
+    if decision == 1 or decision == 3:
 
         for city in citys:
             get_pdf(selected_plots_one[city], city + '.pdf')

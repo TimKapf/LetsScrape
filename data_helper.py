@@ -35,7 +35,7 @@ def tag_correction(restaurants: list, tags: dict ) -> list:
 
             while i < len(restaurant[1]):
 
-                #change to class tag if possible
+                # change to upper-class tag if possible
                 new_tag = get_keys_from_value(tags, restaurant[1][i])
 
                 if new_tag not in restaurant[1] and new_tag != None:
@@ -51,7 +51,7 @@ def tag_correction(restaurants: list, tags: dict ) -> list:
                 else:
                     i+=1
 
-            #if no classtag was found tag will be "Others"
+            # if no class tag was found, tag will be "Others"
             if not restaurant[1] or restaurant[1][0] == None:
                 restaurant[1].append("Others")
 
@@ -72,7 +72,6 @@ def kitchen_counter(restaurants: list) -> tuple:
     for t in restaurants:
         list_of_kitchens += t[1]
     
-    # Create dictionary 
     count_kitchens = {kitchen: list_of_kitchens.count(kitchen) for kitchen in list_of_kitchens}
 
     return (count_kitchens, len(list_of_kitchens))
@@ -82,6 +81,7 @@ def sort_dict_descending(unsorted: dict) -> dict:
 
     """Returns a dictionary in descending order."""
     sorted_dict = {}
+
     # Sort the keys in descending order
     sorted_keys = sorted(unsorted, key=unsorted.get, reverse=True)
 
@@ -109,10 +109,14 @@ def get_average(restaurants: list, index: int):
 
         # Collect all kitchens 
         for restaurant in restaurants:
+
             # If -1: Then there is no information about the value currently (e.g. restaurant is closed) 
             if restaurant[index] != -1: 
+
                 if index != 5:
                     list_of_kitchens += restaurant[1]
+
+                # restaurants without reviews will be excluded
                 elif restaurant[6] != 0:
                     list_of_kitchens += restaurant[1]
             
@@ -120,15 +124,17 @@ def get_average(restaurants: list, index: int):
         average = {kitchen: [0,0] for kitchen in list_of_kitchens}
 
         for restaurant in restaurants:
+
             for kitchen in restaurant[1]:
+
                 if restaurant[index] != -1:
+
                     # Restaurants with zero reviews will not be included
                     if not(index == 5 and restaurant[6] == 0):  
 
                         average[kitchen][0] += restaurant[index]
                         average[kitchen][1] += 1
         
-        #print(average)
         average = {kitchen: (average[kitchen][0] / average[kitchen][1]) for kitchen in list(average.keys())}
 
         return average
@@ -215,11 +221,13 @@ def kitchens_averages_of_multiple_cities(cities: list, all_kitchens: list, index
 def get_number(string: str) -> float: 
 	"""This function returns the numbers of type float which appear in the given String. Lieferando.de uses the german format to represent point numbers, therefore "," will be transformed to ".".
 	 Only works for the german format."""
+
     # Get all digits with ','
 	result = ''.join(x for x in string if x.isdigit() or x == ',')
 
 	if result == "":
 		return -1.0
+        
     # Switch , with . to change from german to english convention 
 	result = float(result.replace(',','.'))
 	return result

@@ -5,6 +5,10 @@ from data_helper import kitchen_counter, sort_dict_descending, get_average, get_
 import statistics
 import math
 
+# to prevent a runtime warning which we can ignore since it has no effect on the programm and/or the computer
+# it is global for this file because it should definetly always be called when visualization.py is imported somewhere
+plt.rcParams.update({'figure.max_open_warning': 0})
+
 def basic_pie(list_of_restaurants: list, city_name: str = "") -> plt.figure:
     """Returns a pie plot which illustrates the distribution of kitchens.
     
@@ -45,6 +49,7 @@ def basic_pie(list_of_restaurants: list, city_name: str = "") -> plt.figure:
     sizes = []
 
     for kitchen in count_kitchens.values():
+
         # Calculate the procentages
         sizes.append((kitchen / total_number_of_kitchens) * 100)  
     
@@ -52,7 +57,7 @@ def basic_pie(list_of_restaurants: list, city_name: str = "") -> plt.figure:
     ax1.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90)
     ax1.set_title("Distributions of kitchens " + city_name)
 
-    #draw circle 
+
     centre = plt.Circle((0,0), 0.7, fc='white')
     fig = plt.gcf()
     fig.gca().add_artist(centre) 
@@ -61,7 +66,6 @@ def basic_pie(list_of_restaurants: list, city_name: str = "") -> plt.figure:
     ax1.axis('equal')  
     plt.tight_layout()
     
-    #plt.show()
     return fig1
 
 
@@ -150,7 +154,6 @@ def avg_bar(restaurants: list, index: int, city_name: str = "") -> plt.figure:
 
     fig = bar(labels, sizes, colors, ylabel, title)
 
-    #plt.show()
     return fig
 
 
@@ -216,7 +219,6 @@ def basic_bar(restaurants: list, city_name: str = "") -> plt.figure:
 
     plot = bar(labels, sizes, colors, 'Percent', 'Distributions of kitchens ' + city_name, patches)
     
-    #plt.show()
     return plot
 
 
@@ -308,7 +310,6 @@ def kitchen_difference(city1: list, city2: list, adress1: str, adress2: str) -> 
     patchlabels = [adress1, adress2, "only " + adress1, "only " + adress2]
 
     fig = difference_plot(differ, ylabel, title, count_kitchens_c1, count_kitchens_c2, patchlabels)
-    #plt.show()
 
     return fig
     
@@ -362,7 +363,6 @@ def avg_difference(city1: list, city2: list, adress1: str, adress2: str, index: 
         patchlabels = [adress1, adress2, adress2 + ' has no review', adress1 + ' has no review']
 
     fig = difference_plot(rating_difference_dict, ylabel, title, average_city1, average_city2, patchlabels)
-    #plt.show()
 
     return fig
     
@@ -419,19 +419,13 @@ def kitchen_distribution_3D(cities: list, city_names: list, kitchens: list=[]) -
 
     plt.yticks(yticks, city_names)
     ax.set_zlabel('Total number of kitchens')
-    #plt.tick_params(axis='x', which='major', labelsize=7)
-
-    #plt.tight_layout()
-
-    #plt.show()
 
     return fig
 
 
-def heatmap(cities: list, city_names: list, index: int=-1) -> plt.figure: #TODO check if amount of kitchens correct
+def heatmap(cities: list, city_names: list, index: int=-1) -> plt.figure: 
     """Compare cities amount of kitchen or averages in a heatmap."""
 
-    number_cities = len(city_names) # number of cities we want to compare
 
     all_kitchens = get_all_kitchens(cities)
         
@@ -447,13 +441,13 @@ def heatmap(cities: list, city_names: list, index: int=-1) -> plt.figure: #TODO 
 
         # Set title for each index
         if index == 2:
-            title = "Average delivery time in each city per kitchen (Minutes)"
+            title = "Average delivery time in \neach city per kitchen (Minutes)"
         elif index == 3:
-            title = "Average delivery cost in each city per kitchen (€)"
+            title = "Average delivery cost in \neach city per kitchen (€)"
         elif index == 4:
-            title = "Average minium order amount in each city per kitchen (€)"
+            title = "Average minium order amount \nin each city per kitchen (€)"
         elif index == 5:
-            title = "Average ratings in each city per kitchen (Stars)"
+            title = "Average ratings in each \ncity per kitchen (Stars)"
 
     fig, ax = plt.subplots()
 
@@ -504,6 +498,5 @@ def heatmap(cities: list, city_names: list, index: int=-1) -> plt.figure: #TODO 
 
     ax.set_title(title)
     fig.tight_layout()
-    #plt.show()
 
     return fig

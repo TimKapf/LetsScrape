@@ -13,7 +13,7 @@ def restaurants(adress: str) -> list:
 	"""
 
 	# Copy the path of the chromedriver in here
-	PATH = "chromedriver_91.exe"#"/Users/tkapferer/Uni/LetsScrape/chromedriver_91"  
+	PATH = "YOUR_DRIVER_PATH"
 	driver = webdriver.Chrome(PATH) 
 	# Enter adress on Lieferando and search for it
 	driver.get("https://www.lieferando.de")
@@ -82,6 +82,7 @@ def restaurants(adress: str) -> list:
 
 	# Close driver
 	driver.quit()
+
 	# last list element is always empty 
 	restaurants = restaurants[:-1]
 

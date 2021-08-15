@@ -39,6 +39,7 @@ def draw_options(mode: int, number_cities: int, start_range: int=1):
             print(str(i) + ": " + plot)
 
     elif mode == 2:
+
         if number_cities == 2:
 
             print("Two city plots: \n")
@@ -64,6 +65,7 @@ def avg_options() -> list:
 
     print("Enter \n\n0: All\n1: Average delivery time per kitchen\n2: Average delivery cost per kitchen\n3: Average minimum order cost per kitchen\n4: Average rating per kitchen\n")
     selections = []
+
     # get (only relevant) selections
     while True:
 
@@ -93,14 +95,15 @@ def get_plots(mode: int, number_cities: int, selection: int, scraped_cities: lis
     name_cities         -- name of the scraped cities
     start_selection     -- to enumerate correctly for mode 3
     """
+
     # plots for each city are in different pdf file, therefore we use a dictionary with the cities as keys
     selected_plots_one = {city: [] for city in name_cities}
+
     # plots where at least two cities get compared only require one file, therefore a list is sufficient 
     selected_plots_two = []
     selected_plots_three = []
 
-    # get all plots which the user selected
-
+    # Get all plots which the user selected
     # Plots for one city
     if mode == 1:
 
@@ -121,6 +124,7 @@ def get_plots(mode: int, number_cities: int, selection: int, scraped_cities: lis
                 for avg_type in selection_avg:
                     avg_type += 1
                     selected_plots_one[n_city].append(visualization.avg_bar(s_city, avg_type, n_city)) 
+
     # Plots for multiple cities
     elif mode == 2:
 
@@ -139,14 +143,22 @@ def get_plots(mode: int, number_cities: int, selection: int, scraped_cities: lis
         if number_cities > 2:
 
             if selection == start_selection:
+
                 selected_plots_three.append(visualization.kitchen_distribution_3D(scraped_cities, name_cities))
+
             elif selection == start_selection + 1:
+
                 selected_plots_three.append(visualization.heatmap(scraped_cities, name_cities))
+
             elif selection == start_selection + 2:
+
                 selection_avg = avg_options()
+
                 for avg_type in selection_avg:
+                    
                     avg_type += 1
                     selected_plots_three.append(visualization.heatmap(scraped_cities, name_cities, avg_type))
+
     # Mode 3 is Mode 1 and Mode 2 combined (Recursion)
     elif mode == 3:
 
