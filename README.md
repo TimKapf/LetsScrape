@@ -48,6 +48,11 @@
    <li>For cities which might occur multiple times in germany, you may enter the zip code to the city name. </li>
    <li>In very rare cases it can happen that the city is not entered correctly and Lieferando will use the last used address. <br>
        In that case please restart the programm, Selenium is commanded to wait for it to work but sometimes it doesn't do so. </ul>
+       
+   #### Time of gathering data <br>
+   
+   * If you gather the data at a time where the restaurants are closed there won't be values for the delivery time, <br> 
+     following from that, the intepration of those and their averages is not possible
    
   
    ## 4. Motivation, Goal and Result
