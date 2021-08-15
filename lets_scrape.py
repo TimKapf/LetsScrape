@@ -37,13 +37,14 @@ for city in citys:
 print("Would you like to use our custom kitchen tags (0) or the original lieferando kitchen tags (1) ?")
 while True:
     decision = input()
+    # Use tag_correction to use custom categories of kitchen
     if decision == '0':
         helper = []
         for city in citys_scraped:
-            # Use tag_correction to use custom categories of kitchen
             helper.append(data_helper.tag_correction(city, kitchens))
         citys_scraped = helper
         break
+    # Use Lieferdando categories
     elif decision == '1':
         break
     else:
@@ -94,7 +95,7 @@ while True:
 
 if selection == 0:
     selection = [1, 2, 3, 4, 5]
-# For all elements selected add each plot for a selection variables 
+# For all elements selected, add each plot for a selection to variables 
 h_one = {city: [] for city in citys}
 h_two = []
 h_three  = []
