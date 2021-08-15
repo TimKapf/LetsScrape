@@ -1,6 +1,8 @@
 # LetsScrape
+
+<img src="images/3D_plot_new.png" width="560">
+
 ## 1. Overview 
-<img src="images/3d_plot.png" width="200"/>
 
  This is the final project of Tim Kapferer and Tim Petersen for the course "Scientific Programming in Python" of the University Osnabrück. Our goal is to compare the range of restaurants in different german cities
  available on Lieferando (www.lieferando.de). To gather the data we use Selenium (https://selenium-python.readthedocs.io) and matplotlib (https://matplotlib.org) 
