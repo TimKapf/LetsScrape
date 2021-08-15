@@ -35,6 +35,7 @@ def basic_pie(list_of_restaurants: list, city_name: str = "") -> plt.figure:
             kitchen_dict['others'] += count_kitchens[key]
             other_kitchens += key
 
+    # Delete others if not used
     if kitchen_dict['others'] == 0:
         kitchen_dict.pop('others')
 
@@ -44,7 +45,6 @@ def basic_pie(list_of_restaurants: list, city_name: str = "") -> plt.figure:
     sizes = []
 
     for kitchen in count_kitchens.values():
-
         # Calculate the procentages
         sizes.append((kitchen / total_number_of_kitchens) * 100)  
     
@@ -85,7 +85,12 @@ def bar(labels: list, sizes: list, colors: list, ylabel: str, title: str, patche
     ax.set_ylabel(ylabel)
     ax.set_title(title)
 
-    #Draw an average line
+    # set yticks positve in both directions 
+    yticks = ax.get_yticks()
+    ax.set_yticks(yticks)
+    ax.set_yticklabels([round(abs(x), 2) for x in yticks])
+
+    # Draw an average line
     if sizes:
         ax.axhline(statistics.mean(sizes), color='red', linewidth=2)
 
@@ -159,10 +164,14 @@ def basic_bar(restaurants: list, city_name: str = "") -> plt.figure:
     labels = count_kitchens.keys()
     sizes = []
     colors = []
-    cmap = ['darkred', 'red', 'orange', 'green', 'blue']
+    cmap = ['darkred', 'red', 'orange', 'green', 'darkgreen', 'blue', 'darkblue', 'black']
 
     # Add the colors and the values in percent for the bars
+    maximum = 0
     for kitchen in count_kitchens.values():
+
+        if kitchen >= maximum:
+            maximum = kitchen
 
         sizes.append((kitchen/total_number_of_kitchens) * 100)
 
@@ -174,17 +183,37 @@ def basic_bar(restaurants: list, city_name: str = "") -> plt.figure:
             colors.append(cmap[2])
         elif kitchen <= 50:
             colors.append(cmap[3])
-        else: 
+        elif kitchen <= 100:
             colors.append(cmap[4])
+        elif kitchen <= 150:
+            colors.append(cmap[5])
+        elif kitchen <= 200:
+            colors.append(cmap[6])
+        else:
+            colors.append(cmap[7])
 
     # legend for illustrate the total amount of kitchens 
     patch1 = mpatches.Patch(color=cmap[0], label='1')
     patch2 = mpatches.Patch(color=cmap[1], label='<= 5')
     patch3 = mpatches.Patch(color=cmap[2], label='<= 25')
     patch4 = mpatches.Patch(color=cmap[3], label='<= 50')
-    patch5 = mpatches.Patch(color=cmap[4], label='> 50')
+    patch5 = mpatches.Patch(color=cmap[4], label='<= 100')
+    patch6 = mpatches.Patch(color=cmap[5], label='<= 150')
+    patch7 = mpatches.Patch(color=cmap[6], label='<= 200')
+    patch8 = mpatches.Patch(color=cmap[7], label='> 200')
 
-    patches = [patch1, patch2, patch3, patch4, patch5]
+    # Reduce number of patches if not necessary
+    if maximum <= 50:
+        patches = [patch1, patch2, patch3, patch4]
+    elif maximum <= 100:
+        patches = [patch1, patch2, patch3, patch4, patch5]
+    elif maximum <= 150:
+        patches = [patch1, patch2, patch3, patch4, patch5, patch6]
+    elif maximum <= 200:
+        patches = [patch1, patch2, patch3, patch4, patch5, patch6, patch7]
+    else:
+        patches = [patch1, patch2, patch3, patch4, patch5, patch6, patch7, patch8]
+
     plot = bar(labels, sizes, colors, 'Percent', 'Distributions of kitchens ' + city_name, patches)
     
     #plt.show()
@@ -220,16 +249,19 @@ def difference_plot(difference_dict: dict, ylabel: str, title: str, values_city1
     labels = difference_dict.keys()
     sizes = list(difference_dict.values())
 
+    # Some plots have an legend integrated 
     if patchlabel:
 
         if len(patchlabel) == 2:
 
+            # Some plots in avg_difference have only two pachtes
             patch1 = mpatches.Patch(color=cmap[0], label=patchlabel[0])
             patch2 = mpatches.Patch(color=cmap[1], label=patchlabel[1])
             patchlabel = [patch1, patch2]
 
         elif len(patchlabel) == 4:
 
+            # Some Plots in avg_difference and kitchen_difference have 4 patches 
             patch1 = mpatches.Patch(color=cmap[0], label=patchlabel[0])
             patch2 = mpatches.Patch(color=cmap[1], label=patchlabel[1])
             patch3 = mpatches.Patch(color=cmap[2], label=patchlabel[2])
@@ -238,6 +270,7 @@ def difference_plot(difference_dict: dict, ylabel: str, title: str, values_city1
 
 
     fig = bar(labels, sizes, colors, ylabel, title, patchlabel)
+    # Set line for y = 0
     plt.axhline(y=0, color='black', linestyle='-')
 
     return fig
@@ -370,7 +403,7 @@ def kitchen_distribution_3D(cities: list, city_names: list, kitchens: list=[]) -
         colors.append(cmap[i%len(cmap)]) 
         yticks.append(number_cities-i)
     
-
+    # Define rows of bar plots
     for a, b, i in zip(colors, yticks, range(number_cities)):
 
         xs = np.arange(len(all_kitchens))
@@ -407,11 +440,12 @@ def heatmap(cities: list, city_names: list, index: int=-1) -> plt.figure: #TODO 
     title = "Num of kitchen in each city"
     data = num_of_kitchens
 
-    if num_of_averages:
+    # Use the averages if not empty 
+    if num_of_averages != []:
 
-        data = num_of_averages
+        data = num_of_averages.astype('float64')
 
-        # If index is given, then use averages 
+        # Set title for each index
         if index == 2:
             title = "Average delivery time in each city per kitchen (Minutes)"
         elif index == 3:
@@ -423,13 +457,16 @@ def heatmap(cities: list, city_names: list, index: int=-1) -> plt.figure: #TODO 
 
     fig, ax = plt.subplots()
 
+    # If the data is -1 one, then the city might not have this kitchen or the data cound not be scraped, because it's not open
+    # Change -1 to a text label which informs that the kitchen might not exists or is closed 
     if -1 in data:
 
         im = ax.imshow(data, cmap='inferno')
         
         #Get the maximum
-        maximum = max(max(data))  
+        maximum = max(data.flatten())  
         
+        # define ticks 
         ticks = np.linspace(0, maximum, 8) 
         ticks = np.insert(ticks, 0, -1, axis=0)
 
@@ -442,9 +479,9 @@ def heatmap(cities: list, city_names: list, index: int=-1) -> plt.figure: #TODO 
         for tick in ticks:
 
             if tick == -1:
-                labels.append('Closed for delivery')
+                labels.append('Closed for delivery/\nKitchen not existing')
             else:
-                labels.append(str(math.floor(tick))) #TODO evtl. besser Runden auf 5er bzw. 10er
+                labels.append(str(math.floor(tick))) 
 
         cbar.ax.set_yticklabels(labels)        
 
@@ -452,16 +489,16 @@ def heatmap(cities: list, city_names: list, index: int=-1) -> plt.figure: #TODO 
 
         im = ax.imshow(data, cmap='inferno')
         fig.colorbar(im)
-
-    # We want to show all ticks...
+        
+    # show all ticks
     ax.set_xticks(np.arange(len(all_kitchens)))
     ax.set_yticks(np.arange(len(city_names)))
     
-    # ... and label them with the respective list entries
+    # label ticks with the respective list entries
     ax.set_xticklabels(all_kitchens)
     ax.set_yticklabels(city_names)
 
-    # Rotate the tick labels and set their alignment.
+    # Rotate the tick labels and set their alignment
     plt.setp(ax.get_xticklabels(), rotation=45, ha="right",
             rotation_mode="anchor")
 

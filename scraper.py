@@ -13,7 +13,11 @@ def restaurants(adress: str) -> list:
 	"""
 
 	# Copy the path of the chromedriver in here
+<<<<<<< HEAD
 	PATH = "chromedriver_91.exe"#"/Users/tkapferer/Uni/LetsScrape/chromedriver_91"  
+=======
+	PATH = "/Users/tkapferer/Uni/LetsScrape/chromedriver_91"  
+>>>>>>> 998069931aaf26d01b1e911c061fb2ce5469e19a
 	driver = webdriver.Chrome(PATH) 
 	# Enter adress on Lieferando and search for it
 	driver.get("https://www.lieferando.de")
@@ -21,15 +25,17 @@ def restaurants(adress: str) -> list:
 	search.click()
 	search.send_keys(adress)
 
+	# Wait for given element 
 	explicit_wait(driver,'lp__place.notranslate.selected', 8)
 
 	search.send_keys(Keys.ENTER)
 	
+	# Wait for given element 
 	explicit_wait(driver,'restaurant_amount',15)
 
 	restaurants = []
 
-	# create entrys for every restaurant found
+	# create entrys for every restaurant found, if not found than use -1
 	for restaurant in driver.find_elements_by_class_name("restaurant.js-restaurant"):
 
 		try:
@@ -38,7 +44,6 @@ def restaurants(adress: str) -> list:
 			restaurant_name = None
 
 		try:
-
 			kitchen =  restaurant.find_element_by_class_name("kitchens").text
 			kitchen = kitchen.split(", ")
 
@@ -46,7 +51,6 @@ def restaurants(adress: str) -> list:
 			kitchen = None
 
 		try: 
-
 			delivery_time = restaurant.find_element_by_class_name("avgdeliverytime.avgdeliverytimefull.open").text
 			
 			if delivery_time.startswith("Ab") or delivery_time.startswith("From"):
@@ -80,7 +84,9 @@ def restaurants(adress: str) -> list:
 		restaurant_tuple = (restaurant_name, kitchen, delivery_time, delivery_cost, min_order, rating, num_of_rating)
 		restaurants.append(restaurant_tuple)
 
+	# Close driver
 	driver.quit()
+	# last list element is always empty 
 	restaurants = restaurants[:-1]
 
 	return restaurants
