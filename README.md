@@ -69,7 +69,7 @@
    
    #### Kitchen Categories
    
-    As development moved on we realised that Lieferando.de has a quite liberal policy for restaurants to choose their kitchens. As an exsample a restaurant can have the kitchens "Italienisch, Italienische Pizza, Pasta" which all can be categorized as Italian. So we decided to make our own categories to reduce the number of kitchens, but of course it is still possible to apply the kitchens on Lieferando.de. <br>
+   As development moved on we realised that Lieferando.de has a quite liberal policy for restaurants to choose their kitchens. As an exsample a restaurant can have the kitchens "Italienisch, Italienische Pizza, Pasta" which all can be categorized as Italian. So we decided to make our own categories to reduce the number of kitchens, but of course it is still possible to apply the kitchens on Lieferando.de. <br>
    
    ![images/Heatmap.png](images/Heatmap.png)
    
@@ -88,22 +88,25 @@
    
    #### Plots 
    We decided to use several Plots to compare cities and to show the information of interest. One can distinguish the types of plots in three categories. 
+
    ##### One City
    <ul>
-    <li><b>Pie Plot:</b> Illustrates the number of kitchens in the city. We recommand you to use our custom kitchen categories, but we also included a feature that rare kitchens will be collected in 'Others'. Yet it might be more clean if one uses the custom kitchen and 'others' will be smaller.</li>
-    <li><b>Bar Plot:</b> Illustrates the number of kitchens or the average of delivery time, delivery cost, minimum order cost or ratings. Both the custom and Lieferando's kitchen work fine.</li>
-    </ul>
+   <li><b>Pie Plot:</b> Illustrates the number of kitchens in the city. We recommand you to use our custom kitchen categories, but we also included a feature that rare kitchens will be collected in 'Others'. Yet it might be more clean if one uses the custom kitchen and 'others' will be smaller.</li>
+   <li><b>Bar Plot:</b> Illustrates the number of kitchens or the average of delivery time, delivery cost, minimum order cost or ratings. Both the custom and Lieferando's kitchen work fine, but for big cities like Munich and Berlin labels might overlap for Lieferando's kitchen.</li>
+   </ul>
+
    ##### Two Cities
    <ul>
-    <li><b>Bar Plot for Differences:</b> Illustrates the differences of two cities of the number of kitchens or the average of delivery time, delivery cost, minimum order cost or ratings between both cities. Here again bar plots can handle a lot of kitchens quite well, so both the custom and Lieferando's kitchens are fine.</li>
+   <li><b>Bar Plot for Differences:</b> Illustrates the differences of two cities of the number of kitchens or the average of delivery time, delivery cost, minimum order cost or ratings between both cities. Here again bar plots can handle cities quite well, so both the custom and Lieferando's kitchens are fine.</li>
    </ul>
-   ##### Multiple Cities above two
+
+   ##### Multiple Cities
    <ul>
- <li><b>3D Plot with multiple bars:</b> Illustrates the number of kitchens of multiple cities. We recommend to use the custom kitchens, because for cities it will be to messy otherwise. In general we recommend the heatmap over this plot. This plot is intended as a cover sheet picture, but it can still provide a nice overview. </li>
- <li><b>Heatmap:</b> Illustrates the number of kitchens or the average of delivery time, delivery cost, minimum order cost or ratings of multiple cities in a heatmap. It looks better with the custom kitchen tags as you can see above. </li>
- </ul>
- 
- For how the plots look like and how to interpret them, we would refer you to the Juypter-Notebook.
+   <li><b>3D Plot with multiple bars:</b> Illustrates the number of kitchens of multiple cities. We recommend to use the custom kitchens, because for cities it will be to messy otherwise. In general we recommend the heatmap over this plot. This plot is intended as a cover sheet picture, but it can still provide a nice overview. </li>
+   <li><b>Heatmap:</b> Illustrates the number of kitchens or the average of delivery time, delivery cost, minimum order cost or ratings of multiple cities in a heatmap. It looks better with the custom kitchen tags as you can see above. </li>
+   </ul>
+
+   For how the plots look like and how to interpret them, we would refer you to the Juypter-Notebook.
  
    
      
