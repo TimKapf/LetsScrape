@@ -1,6 +1,8 @@
 # LetsScrape
+
+<img src="images/3D_plot_new.png" width="560">
+
 ## 1. Overview 
-<img src="images/3d_plot.png" width="200"/>
 
  This is the final project of Tim Kapferer and Tim Petersen for the course "Scientific Programming in Python" of the University Osnabrück. Our goal is to compare the range of restaurants in different german cities
  available on Lieferando (www.lieferando.de). To gather the data we use Selenium (https://selenium-python.readthedocs.io) and matplotlib (https://matplotlib.org) 
@@ -46,6 +48,14 @@
    <li>For cities which might occur multiple times in germany, you may enter the zip code to the city name. </li>
    <li>In very rare cases it can happen that the city is not entered correctly and Lieferando will use the last used address. <br>
        In that case please restart the programm, Selenium is commanded to wait for it to work but sometimes it doesn't do so. </ul>
+       
+   #### Time of gathering data <br>
+   
+   * If you gather the data at a time where the restaurants are closed there won't be values for the delivery time, <br> 
+     following from that, the intepration of those and their averages is not possible
+     
+   #### Bug
+   <ul><li>If you enter the same city multiple times, then there will be multiple plots of the same type. We didn't adress this bug, because it's not intended to enter the same city multiple times. </li></ul>
    
   
    ## 4. Motivation, Goal and Result
