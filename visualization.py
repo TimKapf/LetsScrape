@@ -35,6 +35,7 @@ def basic_pie(list_of_restaurants: list, city_name: str = "") -> plt.figure:
             kitchen_dict['others'] += count_kitchens[key]
             other_kitchens += key
 
+    # Delete others if not used
     if kitchen_dict['others'] == 0:
         kitchen_dict.pop('others')
 
@@ -44,7 +45,6 @@ def basic_pie(list_of_restaurants: list, city_name: str = "") -> plt.figure:
     sizes = []
 
     for kitchen in count_kitchens.values():
-
         # Calculate the procentages
         sizes.append((kitchen / total_number_of_kitchens) * 100)  
     
@@ -64,7 +64,7 @@ def basic_pie(list_of_restaurants: list, city_name: str = "") -> plt.figure:
     #plt.show()
     return fig1
 
-#TODO datatypes and return type
+
 def bar(labels: list, sizes: list, colors: list, ylabel: str, title: str, patches: list=[]) -> plt.figure:
     """Returns a bar plot.
 
@@ -249,16 +249,19 @@ def difference_plot(difference_dict: dict, ylabel: str, title: str, values_city1
     labels = difference_dict.keys()
     sizes = list(difference_dict.values())
 
+    # Some plots have an legend integrated 
     if patchlabel:
 
         if len(patchlabel) == 2:
 
+            # Some plots in avg_difference have only two pachtes
             patch1 = mpatches.Patch(color=cmap[0], label=patchlabel[0])
             patch2 = mpatches.Patch(color=cmap[1], label=patchlabel[1])
             patchlabel = [patch1, patch2]
 
         elif len(patchlabel) == 4:
 
+            # Some Plots in avg_difference and kitchen_difference have 4 patches 
             patch1 = mpatches.Patch(color=cmap[0], label=patchlabel[0])
             patch2 = mpatches.Patch(color=cmap[1], label=patchlabel[1])
             patch3 = mpatches.Patch(color=cmap[2], label=patchlabel[2])
@@ -267,6 +270,7 @@ def difference_plot(difference_dict: dict, ylabel: str, title: str, values_city1
 
 
     fig = bar(labels, sizes, colors, ylabel, title, patchlabel)
+    # Set line for y = 0
     plt.axhline(y=0, color='black', linestyle='-')
 
     return fig
@@ -399,7 +403,7 @@ def kitchen_distribution_3D(cities: list, city_names: list, kitchens: list=[]) -
         colors.append(cmap[i%len(cmap)]) 
         yticks.append(number_cities-i)
     
-
+    # Define rows of bar plots
     for a, b, i in zip(colors, yticks, range(number_cities)):
 
         xs = np.arange(len(all_kitchens))
@@ -436,11 +440,12 @@ def heatmap(cities: list, city_names: list, index: int=-1) -> plt.figure: #TODO 
     title = "Num of kitchen in each city"
     data = num_of_kitchens
 
+    # Use the averages if not empty 
     if num_of_averages != []:
 
         data = num_of_averages.astype('float64')
 
-        # If index is given, then use averages 
+        # Set title for each index
         if index == 2:
             title = "Average of delivery time in each city per kitchen"
         elif index == 3:
@@ -452,7 +457,8 @@ def heatmap(cities: list, city_names: list, index: int=-1) -> plt.figure: #TODO 
 
     fig, ax = plt.subplots()
 
-    
+    # If the data is -1 one, then the city might not have this kitchen or the data cound not be scraped, because it's not open
+    # Change -1 to a text label which informs that the kitchen might not exists or is closed 
     if -1 in data:
 
         im = ax.imshow(data, cmap='inferno')
@@ -460,6 +466,7 @@ def heatmap(cities: list, city_names: list, index: int=-1) -> plt.figure: #TODO 
         #Get the maximum
         maximum = max(data.flatten())  
         
+        # define ticks 
         ticks = np.linspace(0, maximum, 8) 
         ticks = np.insert(ticks, 0, -1, axis=0)
 
@@ -483,20 +490,20 @@ def heatmap(cities: list, city_names: list, index: int=-1) -> plt.figure: #TODO 
         im = ax.imshow(data, cmap='inferno')
         fig.colorbar(im)
         
-    # We want to show all ticks...
+    # show all ticks
     ax.set_xticks(np.arange(len(all_kitchens)))
     ax.set_yticks(np.arange(len(city_names)))
     
-    # ... and label them with the respective list entries
+    # label ticks with the respective list entries
     ax.set_xticklabels(all_kitchens)
     ax.set_yticklabels(city_names)
 
-    # Rotate the tick labels and set their alignment.
+    # Rotate the tick labels and set their alignment
     plt.setp(ax.get_xticklabels(), rotation=45, ha="right",
             rotation_mode="anchor")
 
     ax.set_title(title)
     fig.tight_layout()
-    plt.show()
+    #plt.show()
 
     return fig

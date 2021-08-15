@@ -21,15 +21,17 @@ def restaurants(adress: str) -> list:
 	search.click()
 	search.send_keys(adress)
 
+	# Wait for given element 
 	explicit_wait(driver,'lp__place.notranslate.selected', 8)
 
 	search.send_keys(Keys.ENTER)
 	
+	# Wait for given element 
 	explicit_wait(driver,'restaurant_amount',15)
 
 	restaurants = []
 
-	# create entrys for every restaurant found
+	# create entrys for every restaurant found, if not found than use -1
 	for restaurant in driver.find_elements_by_class_name("restaurant.js-restaurant"):
 
 		try:

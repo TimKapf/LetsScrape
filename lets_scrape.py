@@ -18,6 +18,7 @@ selected_plots_one = []
 selected_plots_two = []
 selected_plots_three = []
 
+# Ask for adresses
 print("Hello. You can get plots for one, two or multiple cities.")
 print("Please enter at least one adress. Type 'x' to stop. \n")
 citys = []
@@ -34,6 +35,7 @@ citys_scraped = []
 for city in citys:
     citys_scraped.append(scraper.restaurants(city))
 
+# Ask which kitchen categories to use
 print("Would you like to use our custom kitchen tags (0) or the original lieferando kitchen tags (1) ?")
 while True:
     decision = input()
@@ -50,7 +52,7 @@ while True:
     else:
         print("Invalid Input. Follow the instruction above!")
 
-
+# Ask which type of plots
 print("Enter 1, 2 or 3. \n")
 if len(citys_scraped) > 2:
     print("Please select number. \n 1: Each city separately. \n 2: Plots with all cities represented. \n 3:  Separately and all cities represented.")
@@ -78,6 +80,7 @@ else:
 
 draw_options(decision, len(citys_scraped))
 
+# Ask for the specific plots of interest
 print("\nEnter the numbers of plots you are interested in or select 0 for all plots. Stop with 'x'.")
 
 selection = []
@@ -93,6 +96,7 @@ while True:
     else:
         print("Invalid Input. Follow the instruction above!")
 
+# Sort plots for pdf's
 if selection == 0:
     selection = [1, 2, 3, 4, 5, 6]
 # For all elements selected, add each plot for a selection to variables 

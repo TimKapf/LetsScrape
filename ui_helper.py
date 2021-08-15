@@ -8,8 +8,10 @@ def get_pdf(list_of_figures: list, pdf_name: str) -> None:
     list_of_figures -- list of matplotlib figures
     pdf_name        -- Name of the pdf file.
     """
+    # save pdf in a file called 'Output' which is located in the project file LetsScrape
     pdf = PdfPages('Output/' + pdf_name)
 
+    # Add plot to pdf file
     for fig in list_of_figures:
         pdf.savefig(fig)
     
@@ -51,6 +53,7 @@ def avg_options() -> list:
 
     print("Enter \n\n0: All\n1: Average delivery time per kitchen\n2: Average delivery cost per kitchen\n3: Average minimum order cost per kitchen\n4: Average rating per kitchen\n")
     selections = []
+    # get (only relevant) selections
     while True:
         avg = input()
         if str.lower(avg) == 'x':
@@ -74,10 +77,15 @@ def get_plots(mode: int, number_cities: int, selection: int, scraped_cities: lis
     name_cities         -- name of the scraped cities
     start_selection     -- to enumerate correctly for mode 3
     """
+    # plots for each city are in different pdf file, therefore we use a dictionary with the cities as keys
     selected_plots_one = {city: [] for city in name_cities}
+    # plots where at least two cities get compared only require one file, therefore a list is sufficient 
     selected_plots_two = []
     selected_plots_three = []
 
+    # get all plots which the user selected
+
+    # Plots for one city
     if mode == 1:
         if selection == 1:
             for s_city, n_city in zip(scraped_cities, name_cities):
@@ -91,6 +99,7 @@ def get_plots(mode: int, number_cities: int, selection: int, scraped_cities: lis
                 for avg_type in selection_avg:
                     avg_type += 1
                     selected_plots_one[n_city].append(visualization.avg_bar(s_city, avg_type, n_city)) 
+    # Plots for multiple cities
     elif mode == 2:
         if number_cities == 2:
             if selection == start_selection: 
@@ -110,6 +119,7 @@ def get_plots(mode: int, number_cities: int, selection: int, scraped_cities: lis
                 for avg_type in selection_avg:
                     avg_type += 1
                     selected_plots_three.append(visualization.heatmap(scraped_cities, name_cities, avg_type))
+    # Mode 3 is Mode 1 and Mode 2 combined (Recursion)
     elif mode == 3:
         if selection < 4:
             return get_plots(1, number_cities, selection, scraped_cities, name_cities) 
