@@ -113,7 +113,7 @@ def get_average(restaurants: list, index: int):
             if restaurant[index] != -1: 
                 if index != 5:
                     list_of_kitchens += restaurant[1]
-                elif restaurant[index] != 0:
+                elif restaurant[6] != 0:
                     list_of_kitchens += restaurant[1]
             
         # Create dictionary with a list of two elements: 0: Add all values 1: Total number of added values

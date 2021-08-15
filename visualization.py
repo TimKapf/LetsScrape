@@ -447,13 +447,13 @@ def heatmap(cities: list, city_names: list, index: int=-1) -> plt.figure: #TODO 
 
         # Set title for each index
         if index == 2:
-            title = "Average of delivery time in each city per kitchen"
+            title = "Average of delivery time"
         elif index == 3:
-            title = "Average of delivery cost in each city per kitchen"
+            title = "Average of delivery cost"
         elif index == 4:
-            title = "Average of the minium order amount in each city per kitchen"
+            title = "Average of the minium order amount"
         elif index == 5:
-            title = "Average of the ratings in each city per kitchen"
+            title = "Average of the ratings"
 
     fig, ax = plt.subplots()
 
@@ -479,7 +479,7 @@ def heatmap(cities: list, city_names: list, index: int=-1) -> plt.figure: #TODO 
         for tick in ticks:
 
             if tick == -1:
-                labels.append('Closed for delivery or\nKitchen not existing')
+                labels.append('Closed for delivery/\nKitchen not existing')
             else:
                 labels.append(str(math.floor(tick))) 
 
