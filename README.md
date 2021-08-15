@@ -53,6 +53,9 @@
    
    * If you gather the data at a time where the restaurants are closed there won't be values for the delivery time, <br> 
      following from that, the intepration of those and their averages is not possible
+     
+   #### Bug
+   <ul><li>If you enter the same city multiple times, then there will be multiple plots of the same type. We didn't adress this bug, because it's not intended to enter the same city multiple times. </li></ul>
    
   
    ## 4. Motivation, Goal and Result
