@@ -109,9 +109,13 @@ def get_average(restaurants: list, index: int):
 
         # Collect all kitchens 
         for restaurant in restaurants:
-            if restaurant[index] != -1: # If -1: Then there is no information about the value currently (e.g. restaurant is closed) 
-                list_of_kitchens += restaurant[1]
-        
+            # If -1: Then there is no information about the value currently (e.g. restaurant is closed) 
+            if restaurant[index] != -1: 
+                if index != 5:
+                    list_of_kitchens += restaurant[1]
+                elif restaurant[index] != 0:
+                    list_of_kitchens += restaurant[1]
+            
         # Create dictionary with a list of two elements: 0: Add all values 1: Total number of added values
         average = {kitchen: [0,0] for kitchen in list_of_kitchens}
 
@@ -123,7 +127,8 @@ def get_average(restaurants: list, index: int):
 
                         average[kitchen][0] += restaurant[index]
                         average[kitchen][1] += 1
-
+        
+        #print(average)
         average = {kitchen: (average[kitchen][0] / average[kitchen][1]) for kitchen in list(average.keys())}
 
         return average
