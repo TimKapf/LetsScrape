@@ -17,7 +17,7 @@
  ### Installation process
  Open a terminal in the project folder and enter <br>
 
-     $ pip -r install requirements.txt
+     $ pip install -r requirements.txt
 
   You need to change the PATH in [`scraper.py`](./scraper.py) in <b>line 17 and 18</b> depending on your operating system. 
 
@@ -59,31 +59,64 @@
    
    ## 4. Motivation, Goal and Result
    
+   ### Motivation
    Early on we agreed to use Webscraping and Matplotlib for the project. Since we are students, we most likely make up a big part of Lieferando's (and other delivery services') customers and we noticed that the Lieferando offer in Osnabrück is quite homogeneous. Mostly pizza and burger. We agreed to scrape information on Lieferando.de to compare Osnabrück with other german cities. <br>
    
+   ### Goal
    Our goal is to compare differnt locations in Germany in terms of diversity, delivery costs, delivery time, ratings etc. and to visualise the results in a convincing and informative way. <br>
    
-   As development moved on we realised that Lieferando.de has a quite liberal policy for restaurants to choose their kitchens. As an exsample a restaurant can have the kitchens "Italienisch, Italienische Pizza, Pasta" which all can be categorized as Italian. So we decided to make our own categories to reduce the number of kitchens, but of course it is still possible to apply the kitchens on Lieferando.de. <br>
+   ### Result and Progress
    
-   As you can see there might be plenty of kitchens: 
+   #### Kitchen Categories
    
+    As development moved on we realised that Lieferando.de has a quite liberal policy for restaurants to choose their kitchens. As an exsample a restaurant can have the kitchens "Italienisch, Italienische Pizza, Pasta" which all can be categorized as Italian. So we decided to make our own categories to reduce the number of kitchens, but of course it is still possible to apply the kitchens on Lieferando.de. <br>
    
    ![images/Heatmap.png](images/Heatmap.png)
    
+   As you can see there might be plenty of kitchens and some types of kitchens are rare and not representive (black squares). So we decided to sort those small sub-kitchens into broader kitchens.
+   <ul>
+    <li><b>Asiatisch</b>: Sushi, Japanisch, Poke bowl, Indisch, Thailändisch, Curry, Vietnamesisch, Chinesisch, Koreanisch, Dumplings, Indonesisch, Pakistanisch</li>
+    <li><b>Orientalisch</b>: Türkisch, Döner, Falafel, 100% Halal, Persisch, Türkische Pizza, Arabisch, Syrisch, Libanesisch, Gyros, Griechisch, Balkanküche</li>
+    <li><b>Italienisch</b>: Italienische Pizza, Pasta</li>
+    <li><b>Amerikanisch</b>: Amerikanisch, Burger, Amerikanische Pizza, Hot Dog, Sandwiches, Mexikanisch, Argentinisch, Spareribs</li>
+    <li><b>Vegetarisch</b>: Vegan</li>
+    <li><b>Cafe & Kuchen</b>: Eiscreme, Snacks, Kuchen, Nachspeisen, Backwaren, Café, Frühstück
+   </ul>
    This is how the heatmap looks like if one applies our categorization:
-   
    
    ![images/HeatmapClear.png](images/HeatmapClear.png)
    
-   ## 5. Structure 
-   We structured our program in five python files. 
+   #### Plots 
+   We decided to use several Plots to compare cities and to show the information of interest. One can distinguish the types of plots in three categories. 
+   ##### One City
    <ul>
- <li>scraper.py       - Scrape the information of interest of lieferando.de </li>
- <li>lets_scrape.py   - User Interface </li>
- <li>ui_helper.py     - Helper functions for the User Interface </li>
- <li>visualization.py - Compute the plots using Matplotlib</li>
- <li>data_helper      - Helper functions to formate and change data
-  </ul>
+    <li><b>Pie Plot</b>: Illustrates the number of kitchens in the city. We recommand you to use our custom kitchen categories, but we also included a feature that rare kitchens will be collected in 'Others'. Yet it might be more clean if one uses the custom kitchen and 'others' will be smaller.</li>
+    <li><b>Bar Plot</b>: Illustrates the number of kitchens or the average of delivery time, delivery cost, minimum order cost or ratings. Both the custom and Lieferando's kitchen work fine.</li>
+    </ul>
+   ##### Two Cities
+   <ul>
+    <li><b>Bar Plot for Differences</br>: Illustrates the differences of two cities of the number of kitchens or the average of delivery time, delivery cost, minimum order cost or ratings between both cities. Here again bar plots can handle a lot of kitchens quite well, so both the custom and Lieferando's kitchens are fine.</li>
+   </ul>
+   ##### Multiple Cities above two
+   <ul>
+ <li><b>3D Plot with multiple bars</br>: Illustrates the number of kitchens of multiple cities. We recommend to use the custom kitchens, because for cities it will be to messy otherwise. In general we recommend the heatmap over this plot. This plot is intended as a cover sheet picture, but it can still provide a nice overview. </li>
+ <li><b>Heatmap</b>: Illustrates the number of kitchens or the average of delivery time, delivery cost, minimum order cost or ratings of multiple cities in a heatmap. It looks better with the custom kitchen tags as you can see above. </li>
+ 
+ For how the plots look like and how to interpret them, we would refer you to the Juypter-Notebook.
+ 
+   
+     
+  
+   
+ ## 5. Structure 
+ We structured our program in five python files. 
+ <ul>
+  <li>scraper.py       - Scrape the information of interest of lieferando.de </li>
+  <li>lets_scrape.py   - User Interface </li>
+  <li>ui_helper.py     - Helper functions for the User Interface </li>
+  <li>visualization.py - Compute the plots using Matplotlib</li>
+  <li>data_helper      - Helper functions to formate and change data
+ </ul>
    
    
    
