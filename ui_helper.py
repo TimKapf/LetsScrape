@@ -26,7 +26,7 @@ def draw_options(mode: int, number_cities: int, start_range: int=1):
     # Options to choose from 
     plots_one = ['Pie plot (Amount of kitchens)', 'Bar plot (Amount of kitchens)', 'Bar plot (Averages)']
     plots_two = ['Bar plot (Amount of kitchens)', 'Bar plot (Averages)']
-    plots_multiple = ['3D bar plots (Amount of kitchens)', 'Heatmap (press 3 to see more)']
+    plots_multiple = ['3D bar plots (Amount of kitchens)', 'Heatmap (Amount of kitchens)', 'Heatmap (Averages)']
 
     # Print Options in the terminal 
     if mode == 1:
@@ -105,6 +105,11 @@ def get_plots(mode: int, number_cities: int, selection: int, scraped_cities: lis
                 selected_plots_three.append(visualization.kitchen_distribution_3D(scraped_cities, name_cities))
             elif selection == start_selection + 1:
                 selected_plots_three.append(visualization.heatmap(scraped_cities, name_cities))
+            elif selection == start_selection + 2:
+                selection_avg = avg_options()
+                for avg_type in selection_avg:
+                    avg_type += 1
+                    selected_plots_three.append(visualization.heatmap(scraped_cities, name_cities, avg_type))
     elif mode == 3:
         if selection < 4:
             return get_plots(1, number_cities, selection, scraped_cities, name_cities) 

@@ -433,14 +433,12 @@ def heatmap(cities: list, city_names: list, index: int=-1) -> plt.figure: #TODO 
         
     num_of_kitchens, num_of_averages = np.array(kitchens_averages_of_multiple_cities(cities, all_kitchens, index), dtype=object)
 
-    
-
     title = "Num of kitchen in each city"
     data = num_of_kitchens
 
-    if num_of_averages:
+    if num_of_averages != []:
 
-        data = num_of_averages
+        data = num_of_averages.astype('float64')
 
         # If index is given, then use averages 
         if index == 2:
@@ -454,12 +452,13 @@ def heatmap(cities: list, city_names: list, index: int=-1) -> plt.figure: #TODO 
 
     fig, ax = plt.subplots()
 
+    
     if -1 in data:
 
         im = ax.imshow(data, cmap='inferno')
         
         #Get the maximum
-        maximum = max(max(data))  
+        maximum = max(data.flatten())  
         
         ticks = np.linspace(0, maximum, 8) 
         ticks = np.insert(ticks, 0, -1, axis=0)
@@ -473,9 +472,9 @@ def heatmap(cities: list, city_names: list, index: int=-1) -> plt.figure: #TODO 
         for tick in ticks:
 
             if tick == -1:
-                labels.append('Closed for delivery')
+                labels.append('Closed for delivery or\nKitchen not existing')
             else:
-                labels.append(str(math.floor(tick))) #TODO evtl. besser Runden auf 5er bzw. 10er
+                labels.append(str(math.floor(tick))) 
 
         cbar.ax.set_yticklabels(labels)        
 
@@ -483,7 +482,7 @@ def heatmap(cities: list, city_names: list, index: int=-1) -> plt.figure: #TODO 
 
         im = ax.imshow(data, cmap='inferno')
         fig.colorbar(im)
-
+        
     # We want to show all ticks...
     ax.set_xticks(np.arange(len(all_kitchens)))
     ax.set_yticks(np.arange(len(city_names)))
@@ -498,6 +497,6 @@ def heatmap(cities: list, city_names: list, index: int=-1) -> plt.figure: #TODO 
 
     ax.set_title(title)
     fig.tight_layout()
-    #plt.show()
+    plt.show()
 
     return fig
