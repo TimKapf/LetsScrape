@@ -64,7 +64,7 @@ def basic_pie(list_of_restaurants: list, city_name: str = "") -> plt.figure:
     #plt.show()
     return fig1
 
-#TODO datatypes and return type
+
 def bar(labels: list, sizes: list, colors: list, ylabel: str, title: str, patches: list=[]) -> plt.figure:
     """Returns a bar plot.
 
@@ -122,22 +122,22 @@ def avg_bar(restaurants: list, index: int, city_name: str = "") -> plt.figure:
     # Set ylabel and title for each possible index 
     if index == 2:
 
-        ylabel = "Average delivery time"
+        ylabel = "Average delivery time (Minutes)"
         title = "Comparison of the average delivery times per kitchen " + city_name
 
     elif index == 3:
 
-        ylabel = "Average delivery cost"
+        ylabel = "Average delivery cost (Euro)"
         title = "Comparison of the average delivery cost per kitchen " + city_name
 
     elif index == 4:
 
-        ylabel = "Average minimum amount for an order"
+        ylabel = "Average minimum amount for an order (Euro)"
         title = "Comparison of the average minmum amounts for an order " + city_name
 
     elif index == 5:
 
-        ylabel = "Average rating"
+        ylabel = "Average rating (Stars)"
         title = "Comparison of the average rating for an order " + city_name
     
     # set the color
@@ -306,25 +306,25 @@ def avg_difference(city1: list, city2: list, adress1: str, adress2: str, index: 
 
     if index == 2:
 
-        ylabel = "difference of the average delivery time of each kitchen"
+        ylabel = "difference of average delivery time per kitchen (Minutes)"
         title = "Delivery time Differences in " + adress1 + " and " + adress2
         patchlabels = [adress1, adress2]
 
     elif index == 3:
 
-        ylabel = "difference of the average delivery cost of each kitchen"
+        ylabel = "difference of average delivery cost per kitchen (€)"
         title = "Delivery Cost Differences in " + adress1 + " and " + adress2
         patchlabels = [adress1, adress2, adress2 + ': Free', adress1 + ': Free']
 
     elif index == 4:
 
-        ylabel = "difference of the average mimium order cost of each kitchen"
+        ylabel = "difference of average mimium order cost per kitchen (€)"
         title = "Minimum Order Cost Differences in " + adress1 + " and " + adress2
         patchlabels = [adress1, adress2]
 
     elif index ==5:
 
-        ylabel = "difference of the average ratings of each kitchen"
+        ylabel = "difference of average ratings per kitchen (Stars)"
         title = "Rating Differences in " + adress1 + " and " + adress2
         patchlabels = [adress1, adress2, adress2 + ' has no review', adress1 + ' has no review']
 
@@ -413,13 +413,13 @@ def heatmap(cities: list, city_names: list, index: int=-1) -> plt.figure: #TODO 
 
         # If index is given, then use averages 
         if index == 2:
-            title = "Average of delivery time in each city per kitchen"
+            title = "Average delivery time in each city per kitchen (Minutes)"
         elif index == 3:
-            title = "Average of delivery cost in each city per kitchen"
+            title = "Average delivery cost in each city per kitchen (€)"
         elif index == 4:
-            title = "Average of the minium order amount in each city per kitchen"
+            title = "Average minium order amount in each city per kitchen (€)"
         elif index == 5:
-            title = "Average of the ratings in each city per kitchen"
+            title = "Average ratings in each city per kitchen (Stars)"
 
     fig, ax = plt.subplots()
 

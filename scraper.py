@@ -14,7 +14,7 @@ def restaurants(adress: str) -> list:
 
 	# Copy the path of the chromedriver in here
 	PATH = "chromedriver_91.exe"#"/Users/tkapferer/Uni/LetsScrape/chromedriver_91"  
-	driver = webdriver.Chrome(executable_path=PATH) 
+	driver = webdriver.Chrome(PATH) 
 	# Enter adress on Lieferando and search for it
 	driver.get("https://www.lieferando.de")
 	search = driver.find_element_by_id("imysearchstring")
@@ -90,7 +90,7 @@ def restaurants(adress: str) -> list:
 
 
 if __name__ == '__main__':
-	print(restaurants("Frankfurt am Main hbf"))
+	pass
 	
 
 

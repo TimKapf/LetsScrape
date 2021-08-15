@@ -210,9 +210,12 @@ def kitchens_averages_of_multiple_cities(cities: list, all_kitchens: list, index
 def get_number(string: str) -> float: 
 	"""This function returns the numbers of type float which appear in the given String. Lieferando.de uses the german format to represent point numbers, therefore "," will be transformed to ".".
 	 Only works for the german format."""
+
 	result = ''.join(x for x in string if x.isdigit() or x == ',')
+
 	if result == "":
 		return -1.0
+        
 	result = float(result.replace(',','.'))
 	return result
 
