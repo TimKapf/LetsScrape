@@ -110,8 +110,8 @@
   <li>scraper.py       - Scrape the information of interest on lieferando.de </li>
   <li>ui_helper.py     - Helper functions for the User Interface </li>
   <li>visualization.py - Compute the plots using Matplotlib</li>
-  <li>data_helper      - Helper functions to formate and change data
- </ul> <br>
+  <li>data_helper      - Helper functions to formate and change data</li>
+ </ul>
  For an overview on how we store the gathered data please take a look at the [`Juypter-Notebook`](output_examples.ipynb).
    
    
