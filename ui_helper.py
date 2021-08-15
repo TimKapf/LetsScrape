@@ -23,11 +23,12 @@ def draw_options(mode: int, number_cities: int, start_range: int=1):
     number_cities   -- number of cities to compare
     start_range     -- to enumerate correctly for mode 3
     """
-
+    # Options to choose from 
     plots_one = ['Pie plot (Amount of kitchens)', 'Bar plot (Amount of kitchens)', 'Bar plot (Averages)']
     plots_two = ['Bar plot (Amount of kitchens)', 'Bar plot (Averages)']
     plots_multiple = ['3D bar plots (Amount of kitchens)', 'Heatmap (press 3 to see more)']
 
+    # Print Options in the terminal 
     if mode == 1:
         print("Separate plots: \n")
         for plot, i in zip(plots_one, range(1, len(plots_one) + 1)):
@@ -46,7 +47,7 @@ def draw_options(mode: int, number_cities: int, start_range: int=1):
         draw_options(2, number_cities, len(plots_one) + 1)
 
 def avg_options() -> list:
-    """Print out the averages the user can choose of."""
+    """Print out and select the averages the user can choose of."""
 
     print("Enter \n\n0: All\n1: Average delivery time per kitchen\n2: Average delivery cost per kitchen\n3: Average minimum order cost per kitchen\n4: Average rating per kitchen\n")
     selections = []
